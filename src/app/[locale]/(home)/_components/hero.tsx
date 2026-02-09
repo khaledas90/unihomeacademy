@@ -18,7 +18,7 @@ export default function Hero() {
             <div className="inline-flex items-center mb-2 gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-border shadow-sm">
               <Monitor className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-foreground/70">
-                Eduvia - English Online Course
+                <span className="font-bold text-secondary">Uni</span><span className="text-primary">Home</span> - English Online Course
               </span>
             </div>
 
@@ -71,7 +71,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative hidden lg:block"> 
+          <div className="relative hidden lg:block">
             <div className="relative">
               <div className="relative w-full h-screen overflow-hidden">
                 <div className="absolute inset-0" />

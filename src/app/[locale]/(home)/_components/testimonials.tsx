@@ -1,40 +1,155 @@
 "use client";
 
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Star, Quote } from "lucide-react";
-import { motion } from "framer-motion";
+import React, { useState, useRef, useEffect, memo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { Iphone } from "@/components/ui/iphone";
+import testimonial from "@/assets/review.png";
+import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP);
 
 const testimonials = [
-  {
-    name: "Alexandra Martinez",
-    role: "Business Professional",
-    content:
-      "Eduvia transformed my English skills completely. The interactive sessions and personalized feedback helped me advance in my career.",
-    rating: 5,
-    avatar: "AM",
-  },
-  {
-    name: "James Wilson",
-    role: "University Student",
-    content:
-      "The structured learning path and peer community made learning English enjoyable. I passed my IELTS exam with flying colors!",
-    rating: 5,
-    avatar: "JW",
-  },
-  {
-    name: "Sophie Anderson",
-    role: "Marketing Manager",
-    content:
-      "Best investment I've made. The course quality is exceptional and the instructors are incredibly supportive. Highly recommend!",
-    rating: 5,
-    avatar: "SA",
-  },
+  { id: 1, image: testimonial.src, alt: "Student Review Screenshot 1" },
+  { id: 2, image: testimonial.src, alt: "Student Review Screenshot 2" },
+  { id: 3, image: testimonial.src, alt: "Student Review Screenshot 3" },
+  { id: 4, image: testimonial.src, alt: "Student Review Screenshot 4" },
+  { id: 5, image: testimonial.src, alt: "Student Review Screenshot 5" },
+  { id: 6, image: testimonial.src, alt: "Student Review Screenshot 6" },
+  { id: 7, image: testimonial.src, alt: "Student Review Screenshot 7" },
+  { id: 8, image: testimonial.src, alt: "Student Review Screenshot 8" },
+  { id: 9, image: testimonial.src, alt: "Student Review Screenshot 9" },
+  { id: 10, image: testimonial.src, alt: "Student Review Screenshot 10" },
 ];
 
-export default function Testimonials() {
+// Memoized Item for performance
+const TestimonialItem = memo(({ t, onOpen }: { t: typeof testimonials[0], onOpen: (id: number) => void }) => {
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-[#fff5f2]">
+    <div
+      className="w-full max-w-[280px] transition-transform duration-500 hover:scale-[1.02] cursor-pointer relative group/item rounded-[3rem] will-change-transform"
+      onClick={() => onOpen(t.id)}
+    >
+      <Iphone src={t.image} className="w-full" />
+      <div className="absolute inset-x-0 bottom-10 flex justify-center opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div className="bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg">
+          <Maximize2 className="w-6 h-6 text-primary" />
+        </div>
+      </div>
+    </div>
+  );
+});
+
+TestimonialItem.displayName = "TestimonialItem";
+
+export default function Testimonials() {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const phoneRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      align: "start",
+      loop: true,
+      skipSnaps: false,
+      dragFree: true,
+    },
+    [Autoplay({ delay: 3000, stopOnInteraction: false, playOnInit: true })]
+  );
+
+  const scrollPrev = React.useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = React.useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const { contextSafe } = useGSAP({ scope: containerRef });
+
+  const onOpen = contextSafe((id: number) => {
+    setSelectedId(id);
+  });
+
+  const onClose = contextSafe(() => {
+    if (!phoneRef.current || !overlayRef.current) {
+      setSelectedId(null);
+      return;
+    }
+
+    const tl = gsap.timeline({
+      onComplete: () => setSelectedId(null),
+    });
+
+    tl.to(phoneRef.current, {
+      scale: 0.8,
+      rotationY: 45,
+      y: 100,
+      opacity: 0,
+      duration: 0.4,
+      ease: "power2.in",
+    }).to(
+      overlayRef.current,
+      {
+        opacity: 0,
+        duration: 0.3,
+      },
+      "-=0.2"
+    );
+  });
+
+  // Handle Opening Animation
+  useEffect(() => {
+    if (selectedId && phoneRef.current && overlayRef.current) {
+      gsap.set(overlayRef.current, { opacity: 0 });
+      gsap.set(phoneRef.current, {
+        scale: 0.5,
+        rotationY: -45,
+        y: 200,
+        opacity: 0
+      });
+
+      gsap.to(overlayRef.current, {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+
+      gsap.to(phoneRef.current, {
+        scale: 1,
+        rotationY: 0,
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "elastic.out(1, 0.75)",
+        // Use standard CSS transforms for better performance
+        force3D: true,
+      });
+    }
+  }, [selectedId]);
+
+  // Stop/Start Autoplay based on selection
+  useEffect(() => {
+    if (!emblaApi) return;
+    const autoplay = emblaApi.plugins().autoplay;
+    if (!autoplay) return;
+
+    if (selectedId) {
+      autoplay.stop();
+    } else {
+      autoplay.play();
+    }
+  }, [selectedId, emblaApi]);
+
+  const selectedTestimonial = testimonials.find((t) => t.id === selectedId);
+
+  return (
+    <section className="py-24 bg-gradient-to-b from-white to-[#fff5f2] overflow-hidden" ref={containerRef}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -42,69 +157,91 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             What Our <span className="text-primary">Students Say</span>
           </h2>
           <p className="text-lg text-foreground/60 max-w-2xl mx-auto">
             Join thousands of successful learners who have transformed their
-            English skills with Eduvia
+            English skills with UniHome
           </p>
         </motion.div>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={testimonial.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
+        {/* Testimonials Carousel */}
+        <div className="relative max-w-6xl mx-auto group">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex -ml-4 md:-ml-8">
+              {testimonials.map((t) => (
+                <div
+                  key={t.id}
+                  className="flex-[0_0_100%] min-w-0 pl-4 md:pl-8 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
+                >
+                  <div className="flex justify-center py-4">
+                    <TestimonialItem t={t} onOpen={onOpen} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="absolute top-1/2 -left-4 md:-left-12 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <Button
+              onClick={scrollPrev}
+              variant="outline"
+              size="icon"
+              className="rounded-full bg-white shadow-lg border-primary/10 hover:bg-primary hover:text-white"
             >
-              <Card className="border-0 shadow-sm hover:shadow-md transition-all duration-300 h-full">
-                <CardContent className="p-6">
-                  {/* Quote Icon */}
-                  <div className="mb-4">
-                    <Quote className="w-8 h-8 text-primary/30" />
-                  </div>
-
-                  {/* Rating */}
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-4 h-4 fill-[#f15a2d] text-[#f15a2d]"
-                      />
-                    ))}
-                  </div>
-
-                  {/* Content */}
-                  <p className="text-foreground/70 mb-6 leading-relaxed">
-                    "{testimonial.content}"
-                  </p>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-white font-semibold">
-                      {testimonial.avatar}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground">
-                        {testimonial.name}
-                      </p>
-                      <p className="text-sm text-foreground/60">
-                        {testimonial.role}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+          </div>
+          <div className="absolute top-1/2 -right-4 md:-right-12 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <Button
+              onClick={scrollNext}
+              variant="outline"
+              size="icon"
+              className="rounded-full bg-white shadow-lg border-primary/10 hover:bg-primary hover:text-white"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </div>
+
+      {/* GSAP Modal */}
+      <AnimatePresence>
+        {selectedId && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden">
+            {/* Overlay */}
+            <div
+              ref={overlayRef}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md cursor-pointer"
+              onClick={onClose}
+            />
+
+            {/* Modal Content */}
+            <div ref={modalRef} className="relative w-full max-w-sm z-10 perspective-1000 pointer-events-none">
+              <div
+                ref={phoneRef}
+                className="w-full  will-change-transform"
+              >
+                {selectedTestimonial && (
+                  <Iphone src={selectedTestimonial.image} className="w-full" />
+                )}
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={onClose}
+                className="absolute -top-12 right-0 md:-right-16 text-white hover:text-primary transition-colors p-2 pointer-events-auto"
+              >
+                <X className="w-8 h-8" />
+              </button>
+            </div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
