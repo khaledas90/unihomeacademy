@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { useTranslations } from "next-intl";
 import EnFlag from "@/assets/en-flag.svg";
 import ArFlag from "@/assets/ar-flag.svg";
 import Image from "next/image";
@@ -12,7 +11,6 @@ const LanguageSwitcher = ({ isFooter }: { isFooter?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const t = useTranslations("common.header");
   const router = useRouter();
 
   const languages = [

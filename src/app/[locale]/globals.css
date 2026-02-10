@@ -55,7 +55,7 @@
   --primary: #f15a2d;
   --primary-foreground: oklch(0.99 0 0);
   /* Second color: #1f447b (dark blue) - Secondary */
-  --secondary: #1f447b;
+  --secondary: #1c64f2;
   --secondary-foreground: oklch(0.99 0 0);
   --muted: oklch(0.96 0.005 0);
   --muted-foreground: oklch(0.5 0.01 0);
@@ -78,7 +78,7 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: #f15a2d;
-  
+
   /* Custom colors for course website */
   --success: oklch(0.65 0.15 150);
   --warning: #f15a2d;
@@ -129,19 +129,24 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-semibold tracking-tight;
   }
-  
+
   h1 {
     @apply text-4xl md:text-5xl lg:text-6xl;
   }
-  
+
   h2 {
     @apply text-3xl md:text-4xl lg:text-5xl;
   }
-  
+
   h3 {
     @apply text-2xl md:text-3xl;
   }
@@ -152,10 +157,12 @@
 }
 
 @keyframes like-bounce {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
@@ -170,6 +177,7 @@
     transform: scale(0.5);
     opacity: 0.7;
   }
+
   100% {
     transform: scale(2.5);
     opacity: 0;
@@ -190,6 +198,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -200,6 +209,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -216,4 +226,8 @@
 /* Smooth hover transitions */
 .transition-smooth {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
 }

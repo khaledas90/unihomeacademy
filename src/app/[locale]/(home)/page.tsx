@@ -3,7 +3,8 @@ import Hero from "./_components/hero";
 import Features from "./_components/features";
 import CourseHighlights from "./_components/course-highlights";
 import CourseCards from "./_components/course-cards";
-import Testimonials from "./_components/testimonials"; 
+import Testimonials from "./_components/testimonials";
+import Teachers from "./_components/teachers";
 
 export default function HomePage() {
   return (
@@ -12,7 +13,8 @@ export default function HomePage() {
       <Features />
       <CourseHighlights />
       <CourseCards />
-      <Testimonials /> 
+      <Teachers />
+      <Testimonials />
     </>
   );
 }
