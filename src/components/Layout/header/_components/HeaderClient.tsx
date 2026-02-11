@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,16 +12,11 @@ import logo from "@/assets/logo.png";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "About Us", href: "/about-us" },
-  {
-    name: "Teachers",
-    href: "/teachers", 
-  },
-  {
-    name: "How to use the Platform",
-    href: "/how-to-use", 
-  },
-  { name: "Contact Us", href: "/contact-us" },
+  { name: "About Us", href: "/about" },
+  { name: "Teachers", href: "/teachers" },
+  { name: "Why Us", href: "/why-us" },
+  { name: "How to use", href: "/how-it-works" },
+  { name: "Contact Us", href: "/contact" },
 ];
 
 export default function HeaderClient() {
@@ -43,7 +38,7 @@ export default function HeaderClient() {
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
           ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border"
-          : "bg-[#c9dcf1]/95 backdrop-blur-sm"
+          : "bg-transparent backdrop-blur-sm"
       )}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,8 +63,8 @@ export default function HeaderClient() {
                   pathname?.includes(item.href) && item.href !== "/"
                     ? "text-primary bg-primary/10"
                     : pathname === item.href
-                    ? "text-primary bg-primary/10"
-                    : "text-foreground/70 hover:text-foreground hover:bg-muted"
+                      ? "text-primary bg-primary/10"
+                      : "text-foreground/70 hover:text-foreground hover:bg-muted"
                 )}
               >
                 {item.name}
@@ -93,7 +88,7 @@ export default function HeaderClient() {
               asChild
               className="hidden sm:flex bg-primary hover:bg-primary/90 text-white shadow-md hover:shadow-lg transition-all"
             >
-              <Link href="/get-started">Get Started</Link>
+              <Link href="/register">Get Started</Link>
             </Button>
 
             {/* Mobile Menu Button */}
@@ -124,8 +119,8 @@ export default function HeaderClient() {
                     pathname?.includes(item.href) && item.href !== "/"
                       ? "text-primary bg-primary/10"
                       : pathname === item.href
-                      ? "text-primary bg-primary/10"
-                      : "text-foreground/70 hover:text-foreground hover:bg-muted"
+                        ? "text-primary bg-primary/10"
+                        : "text-foreground/70 hover:text-foreground hover:bg-muted"
                   )}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

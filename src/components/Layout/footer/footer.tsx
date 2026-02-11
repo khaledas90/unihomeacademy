@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Mail, Phone } from "lucide-react";
 import logo from "@/assets/logo.png";
 import Image from "next/image";
@@ -25,13 +25,20 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
             <ul className="space-y-3">
-              {["Home", "About Us", "Courses", "Contact Us"].map((link) => (
-                <li key={link}>
+              {[
+                { name: "Home", href: "/" },
+                { name: "About Us", href: "/about" },
+                { name: "Teachers", href: "/teachers" },
+                { name: "Why Us", href: "/why-us" },
+                { name: "How it Works", href: "/how-it-works" },
+                { name: "Contact Us", href: "/contact" }
+              ].map((link) => (
+                <li key={link.name}>
                   <Link
-                    href={`/${link.toLowerCase().replace(" ", "-")}`}
+                    href={link.href}
                     className="text-sm text-foreground/60 hover:text-primary transition-colors"
                   >
-                    {link}
+                    {link.name}
                   </Link>
                 </li>
               ))}
@@ -61,11 +68,11 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-2 text-sm text-foreground/60">
                 <Mail className="w-4 h-4" />
-                <span>info@unih0me.com</span>
+                <span>hello@unihomeacademy.com</span>
               </li>
               <li className="flex items-center gap-2 text-sm text-foreground/60">
                 <Phone className="w-4 h-4" />
-                <span>0020 1222 5150 66</span>
+                <span>+20 1222 515 066</span>
               </li>
             </ul>
 
@@ -74,20 +81,20 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-foreground/60">
-            © {new Date().getFullYear()} UniHome. All rights reserved.
+            © {new Date().getFullYear()} UniHome Academy. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link
               href="/privacy"
               className="text-sm text-foreground/60 hover:text-primary transition-colors"
             >
-              Privacy
+              Privacy Policy
             </Link>
             <Link
               href="/terms"
               className="text-sm text-foreground/60 hover:text-primary transition-colors"
             >
-              Terms
+              Terms of Service
             </Link>
           </div>
         </div>
