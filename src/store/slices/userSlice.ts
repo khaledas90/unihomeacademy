@@ -1,4 +1,5 @@
-import { User } from "../api/useAuth";
+ 
+import { User } from "@/types/users";
 import { StateCreator, StoreApi } from "zustand";
 
 export interface UserState {
