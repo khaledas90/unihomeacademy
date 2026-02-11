@@ -36,6 +36,7 @@ export interface Teacher {
   code: string | null;
   firstname: string;
   lastname: string;
+  level: string | null;
   email: string;
   phone: string | null;
   type: string;

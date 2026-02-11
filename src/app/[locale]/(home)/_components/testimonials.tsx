@@ -5,29 +5,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Iphone } from "@/components/ui/iphone";
-import testimonial from "@/assets/review.png";
 import { ChevronLeft, ChevronRight, X, Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { useTestimonials } from "@/store/api/useTestimonials";
+import { Skeleton } from "@/components/ui/skeleton";
 
 gsap.registerPlugin(useGSAP);
 
-const testimonials = [
-  { id: 1, image: testimonial.src, alt: "Student Review Screenshot 1" },
-  { id: 2, image: testimonial.src, alt: "Student Review Screenshot 2" },
-  { id: 3, image: testimonial.src, alt: "Student Review Screenshot 3" },
-  { id: 4, image: testimonial.src, alt: "Student Review Screenshot 4" },
-  { id: 5, image: testimonial.src, alt: "Student Review Screenshot 5" },
-  { id: 6, image: testimonial.src, alt: "Student Review Screenshot 6" },
-  { id: 7, image: testimonial.src, alt: "Student Review Screenshot 7" },
-  { id: 8, image: testimonial.src, alt: "Student Review Screenshot 8" },
-  { id: 9, image: testimonial.src, alt: "Student Review Screenshot 9" },
-  { id: 10, image: testimonial.src, alt: "Student Review Screenshot 10" },
-];
+interface Testimonial {
+  id: number;
+  image: string;
+  title: string | null;
+  subtitle: string | null;
+  description: string | null;
+}
 
 // Memoized Item for performance
-const TestimonialItem = memo(({ t, onOpen }: { t: typeof testimonials[0], onOpen: (id: number) => void }) => {
+const TestimonialItem = memo(({ t, onOpen }: { t: Testimonial, onOpen: (id: number) => void }) => {
   return (
     <div
       className="w-full max-w-[280px] transition-transform duration-500 hover:scale-[1.02] cursor-pointer relative group/item rounded-[3rem] will-change-transform"
@@ -51,6 +47,12 @@ export default function Testimonials() {
   const modalRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+
+  const { data: testimonialsData, isLoading } = useTestimonials();
+  const allTestimonials = testimonialsData?.data?.testimonials || [];
+
+  // Filter out invalid testimonials (where description or title is null, common for some API responses)
+  const testimonials = allTestimonials.filter(t => t.image);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
@@ -102,7 +104,7 @@ export default function Testimonials() {
       "-=0.2"
     );
   });
- 
+
   useEffect(() => {
     if (selectedId && phoneRef.current && overlayRef.current) {
       gsap.set(overlayRef.current, { opacity: 0 });
@@ -125,12 +127,12 @@ export default function Testimonials() {
         y: 0,
         opacity: 1,
         duration: 0.8,
-        ease: "elastic.out(1, 0.75)", 
+        ease: "elastic.out(1, 0.75)",
         force3D: true,
       });
     }
   }, [selectedId]);
- 
+
   useEffect(() => {
     if (!emblaApi) return;
     const autoplay = emblaApi.plugins().autoplay;
@@ -145,10 +147,20 @@ export default function Testimonials() {
 
   const selectedTestimonial = testimonials.find((t) => t.id === selectedId);
 
+  const LoadingSkeleton = () => (
+    <div className="flex gap-8 overflow-hidden">
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] px-4 flex justify-center">
+          <Skeleton className="w-[280px] aspect-[433/882] rounded-[3rem]" />
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <section className="py-24 bg-gradient-to-b from-white to-[#fff5f2] overflow-hidden" ref={containerRef}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -164,23 +176,27 @@ export default function Testimonials() {
             English skills with UniHome
           </p>
         </motion.div>
- 
+
         <div className="relative max-w-6xl mx-auto group">
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex -ml-4 md:-ml-8">
-              {testimonials.map((t) => (
-                <div
-                  key={t.id}
-                  className="flex-[0_0_100%] min-w-0 pl-4 md:pl-8 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
-                >
-                  <div className="flex justify-center py-4">
-                    <TestimonialItem t={t} onOpen={onOpen} />
+          {isLoading ? (
+            <LoadingSkeleton />
+          ) : (
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex -ml-4 md:-ml-8">
+                {testimonials.map((t) => (
+                  <div
+                    key={t.id}
+                    className="flex-[0_0_100%] min-w-0 pl-4 md:pl-8 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
+                  >
+                    <div className="flex justify-center py-4">
+                      <TestimonialItem t={t} onOpen={onOpen} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
- 
+          )}
+
           <div className="absolute top-1/2 -left-4 md:-left-12 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <Button
               onClick={scrollPrev}
@@ -203,17 +219,17 @@ export default function Testimonials() {
           </div>
         </div>
       </div>
- 
+
       <AnimatePresence>
         {selectedId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden">
-          
+
             <div
               ref={overlayRef}
               className="absolute inset-0 bg-black/60 backdrop-blur-md cursor-pointer"
               onClick={onClose}
             />
- 
+
             <div ref={modalRef} className="relative w-full max-w-[390px] z-10 perspective-1000 pointer-events-none">
               <div
                 ref={phoneRef}
@@ -223,7 +239,7 @@ export default function Testimonials() {
                   <Iphone src={selectedTestimonial.image} className="w-full" />
                 )}
               </div>
- 
+
               <button
                 onClick={onClose}
                 className="absolute cursor-pointer -top-12 right-0 md:-right-16 text-white hover:text-primary transition-colors p-2 pointer-events-auto"

@@ -71,7 +71,7 @@ export default function DashboardPage() {
                 <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
                   {stat.title}
                 </CardTitle>
-                <div className={cn("p-2 rounded-lg bg-gradient-to-br", stat.color, "opacity-20")}>
+                <div className={cn("p-2 rounded-lg bg-gradient-to-br", stat.color, "opacity-100")}>
                   <Icon icon={stat.icon} width={20} height={20} className={cn("text-white")} />
                 </div>
               </CardHeader>

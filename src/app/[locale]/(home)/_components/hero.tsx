@@ -85,16 +85,15 @@ export default function Hero() {
                   <Image
                     src={heroImage}
                     alt="logo"
-                    width={200}
-
                     quality={100}
-                    className="w-[80%] h-full object-cover"
-                    height={200}
+                    className=" object-cover"
+                    width={1000}
+                    height={1000}
                   />
                 </div>
               </div>
 
-              <div className="absolute top-[280px] -right-4 bg-white rounded-xl shadow-lg p-3 border border-border max-w-full">
+              <div className="absolute top-[310px] -right-4 bg-white rounded-xl shadow-lg p-3 border border-border max-w-full">
                 <div className="flex items-start gap-2">
                   <div className="flex-shrink-0 w-8 h-8 bg-[#1f447b]/10 rounded-lg flex items-center justify-center">
                     <CheckCircle2 className="w-4 h-4 text-[#1f447b]" />
