@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { axiosBaseQuery } from "@/utils/axiosConfig";
 import useAppStore from "../store";
-import { deleteCookie } from "cookies-next/client";
+import { deleteCookie, setCookie } from "cookies-next/client";
 import { User } from "@/types/users";
 
 export interface UserData {
@@ -10,6 +10,7 @@ export interface UserData {
 }
 
 export const useRegisterwithTeacher = () => {
+  const { login } = useAppStore();
   return useMutation({
     mutationFn: async (data: {
       firstname: string;
@@ -30,14 +31,27 @@ export const useRegisterwithTeacher = () => {
         method: "POST",
         data,
       });
-      if (response.error) throw new Error("Registration failed");
+      if (response.error) {
+        const errorMessage = (response.error.data as any)?.message || "Registration failed";
+        throw new Error(errorMessage);
+      }
       return response.data as { token: string; user: User };
     },
     onSuccess: (data) => {
-      toast.success("Teacher registration successful");
+      if (data.token) {
+        setCookie("token", data.token, {
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+          path: "/",
+        });
+      }
+      if (data.user) {
+        login(data.token, data.user);
+      }
+      toast.success("Teacher registration successful! Welcome to UniHome Academy");
     },
-    onError: () => {
-      toast.error("Teacher registration failed");
+    onError: (error: any) => {
+      const errorMessage = error?.message || error?.response?.data?.message || "Teacher registration failed. Please try again.";
+      toast.error(errorMessage);
     },
   });
 };

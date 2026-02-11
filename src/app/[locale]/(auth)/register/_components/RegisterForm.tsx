@@ -32,7 +32,9 @@ import Link from "next/link";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
-import { useRegister } from "@/store/api/useAuth";
+import { setCookie } from "cookies-next/client";
+import { useRegisterwithTeacher, useRegisterwithStudent } from "@/store/api/useAuth";
+import useAppStore from "@/store/store";
 import { TermsAndConditionsContent } from "./TermsAndConditions";
 
 interface RegisterFormData {
@@ -58,7 +60,11 @@ export default function RegisterForm() {
     const router = useRouter();
     const params = useParams();
     const locale = params?.locale || "en";
-    const { mutateAsync: registerUser, isPending } = useRegister();
+    const { login } = useAppStore();
+    const { mutateAsync: registerTeacher, isPending: isPendingTeacher } = useRegisterwithTeacher();
+    const { mutateAsync: registerStudent, isPending: isPendingStudent } = useRegisterwithStudent();
+    
+    const isPending = isPendingTeacher || isPendingStudent;
 
     const {
         register,
@@ -76,23 +82,78 @@ export default function RegisterForm() {
     const onSubmit = async (data: RegisterFormData) => {
         setError("");
 
+        // Validate required fields
         if (!data.accept_terms) {
             setError("You must accept the terms and conditions.");
             return;
         }
 
+        if (!data.gender) {
+            setError("Please select your gender.");
+            return;
+        }
+
+        if (!data.country) {
+            setError("Please select your country.");
+            return;
+        }
+
+        if (!data.timezone) {
+            setError("Please select your timezone.");
+            return;
+        }
+
+        if (!data.source) {
+            setError("Please select how you heard about us.");
+            return;
+        }
+
+        if (!data.whats || data.whats.trim() === "") {
+            setError("WhatsApp number is required.");
+            return;
+        }
+
         try {
-            await registerUser({
+            // Prepare registration data
+            const registrationData = {
+                firstname: data.firstname,
+                lastname: data.lastname,
                 email: data.email,
                 password: data.password,
-                name: `${data.firstname} ${data.lastname}`,
-                // Note: The current useRegister hook only takes email, password, name.
-                // If the backend expects more, the hook should be updated.
-            });
+                confirm_password: data.confirm_password,
+                gender: data.gender,
+                whats: data.whats,
+                country: data.country,
+                timezone: data.timezone,
+                source: data.source,
+                type: data.type,
+                accept_terms: data.accept_terms ? "1" : "0", // Convert boolean to string
+            };
+
+            // Call appropriate registration hook based on user type
+            const result = userType === "Teacher" 
+                ? await registerTeacher(registrationData)
+                : await registerStudent(registrationData);
+
+            // Store token in cookie
+            if (result.token) {
+                setCookie("token", result.token, {
+                    maxAge: 60 * 60 * 24 * 7, // 7 days
+                    path: "/",
+                });
+            }
+
+            // Store user in store
+            if (result.user) {
+                login(result.token, result.user);
+            }
+
+            // Navigate to dashboard
             router.push(`/${locale}/dashboard`);
         } catch (err: any) {
-            console.error(err);
-            setError("Registration failed. Please try again.");
+            console.error("Registration error:", err);
+            const errorMessage = err?.response?.data?.message || err?.message || "Registration failed. Please try again.";
+            setError(errorMessage);
         }
     };
 
@@ -133,7 +194,7 @@ export default function RegisterForm() {
                             setValue("type", nextType);
                         }}
                         type="button"
-                        className="relative w-12 h-6 rounded-full bg-primary transition-colors duration-200 focus:outline-none"
+                        className="relative w-12 cursor-pointer h-6 rounded-full bg-primary transition-colors duration-200 focus:outline-none"
                     >
                         <div
                             className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-200 ${userType === "Teacher" ? "translate-x-6" : ""
@@ -236,9 +297,9 @@ export default function RegisterForm() {
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div className="space-y-2">
-                            <Label>Gender</Label>
+                            <Label>Gender <span className="text-red-500">*</span></Label>
                             <Select onValueChange={(val) => setValue("gender", val)}>
-                                <SelectTrigger className="h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm w-full">
+                                <SelectTrigger className={`h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm w-full ${!watch("gender") ? "border-red-300" : ""}`}>
                                     <SelectValue placeholder="Gender" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -246,11 +307,12 @@ export default function RegisterForm() {
                                     <SelectItem value="female">Female</SelectItem>
                                 </SelectContent>
                             </Select>
+                            {!watch("gender") && <p className="text-xs text-red-500">Gender is required</p>}
                         </div>
                         <div className="space-y-2">
-                            <Label>Country</Label>
+                            <Label>Country <span className="text-red-500">*</span></Label>
                             <Select onValueChange={(val) => setValue("country", val)}>
-                                <SelectTrigger className="h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm w-full">
+                                <SelectTrigger className={`h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm w-full ${!watch("country") ? "border-red-300" : ""}`}>
                                     <SelectValue placeholder="Country" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -259,11 +321,12 @@ export default function RegisterForm() {
                                     <SelectItem value="ae">UAE</SelectItem>
                                 </SelectContent>
                             </Select>
+                            {!watch("country") && <p className="text-xs text-red-500">Country is required</p>}
                         </div>
                         <div className="space-y-2">
-                            <Label>Timezone</Label>
+                            <Label>Timezone <span className="text-red-500">*</span></Label>
                             <Select onValueChange={(val) => setValue("timezone", val)}>
-                                <SelectTrigger className="h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm w-full text-left">
+                                <SelectTrigger className={`h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm w-full text-left ${!watch("timezone") ? "border-red-300" : ""}`}>
                                     <SelectValue placeholder="GMT+2" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -271,11 +334,12 @@ export default function RegisterForm() {
                                     <SelectItem value="GMT+3">GMT+3 (Riyadh)</SelectItem>
                                 </SelectContent>
                             </Select>
+                            {!watch("timezone") && <p className="text-xs text-red-500">Timezone is required</p>}
                         </div>
                         <div className="space-y-2">
-                            <Label>Source</Label>
+                            <Label>Source <span className="text-red-500">*</span></Label>
                             <Select onValueChange={(val) => setValue("source", val)}>
-                                <SelectTrigger className="h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm w-full">
+                                <SelectTrigger className={`h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm w-full ${!watch("source") ? "border-red-300" : ""}`}>
                                     <SelectValue placeholder="Source" />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -284,17 +348,22 @@ export default function RegisterForm() {
                                     <SelectItem value="other">Other</SelectItem>
                                 </SelectContent>
                             </Select>
+                            {!watch("source") && <p className="text-xs text-red-500">Source is required</p>}
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="whats">WhatsApp Number</Label>
+                        <Label htmlFor="whats">WhatsApp Number <span className="text-red-500">*</span></Label>
                         <Input
                             id="whats"
-                            {...register("whats", { required: "Required" })}
-                            placeholder="WhatsApp Number"
+                            {...register("whats", { 
+                                required: "WhatsApp number is required.",
+                                minLength: { value: 10, message: "Please enter a valid WhatsApp number" }
+                            })}
+                            placeholder="+20 123 456 7890"
                             className="h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm"
                         />
+                        {errors.whats && <p className="text-xs text-red-500">{errors.whats.message}</p>}
                     </div>
 
                     <div className="flex items-center space-x-2 py-2">
@@ -330,7 +399,7 @@ export default function RegisterForm() {
                         {isPending ? (
                             <>
                                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                Wait...
+                                Creating Account...
                             </>
                         ) : (
                             "Sign Up"
