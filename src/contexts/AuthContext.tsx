@@ -63,8 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
         .then((response) => {
           if (!response.error && response.data) {
-            const userData = response.data as { user: User };
-            setUser(userData.user);
+            const userData = response
+            console.log(userData);
+            setUser(userData.data.user);
           }
         })
         .catch(() => { 
