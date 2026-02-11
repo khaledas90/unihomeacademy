@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-const BASE_URL = "https://www.oxfmoney.com/api";
+const BASE_URL = "https://admin.unihomeacademy.com/public/api";
 
 export async function fetcher<Response>(
   endpoint: string,
