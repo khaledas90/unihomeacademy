@@ -6,6 +6,7 @@ import image1 from "@/assets/image-10.jpg";
 import image2 from "@/assets/image-11.jpg";
 import image3 from "@/assets/image-7.jpg";
 import heroImage from "@/assets/hero.png";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -35,19 +36,23 @@ export default function Hero() {
             </p>
 
             <div>
+              <Link href={"/teachers"}>
               <Button
                 size="lg"
                 className="bg-primary cursor-pointer hover:bg-primary/90 text-white font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
-                Explore Courses
+                Explore Instructors
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
+              </Link>
+              <Link href={"/about"}>
               <Button
                 size="lg"
                 className="bg-transparent border border-primary text-primary hover:bg-primary hover:text-white mx-4 cursor-pointer  font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
                 About Us
               </Button>
+              </Link>
             </div>
 
             <div className="flex items-center gap-4 pt-4">
@@ -79,7 +84,7 @@ export default function Hero() {
 
           <div className="relative hidden lg:block">
             <div className="relative">
-              <div className="relative w-full h-screen overflow-hidden">
+              <div className="relative w-[85%] h-screen overflow-hidden">
                 <div className="absolute inset-0" />
                 <div className="absolute inset-0  mt-20 flex items-center justify-center">
                   <Image
