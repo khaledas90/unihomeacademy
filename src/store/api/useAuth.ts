@@ -3,32 +3,30 @@ import { toast } from "sonner";
 import { axiosBaseQuery } from "@/utils/axiosConfig";
 import useAppStore from "../store";
 import { deleteCookie } from "cookies-next/client";
-
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-}
+import { User } from "@/types/users";
 
 export interface UserData {
-  user: {
-    id: number;
-    firebase_uid: string;
-    name: string;
-    email: string;
-    created_at: string;
-  };
+  user: User;
 }
 
-export const useRegister = () => {
+export const useRegisterwithTeacher = () => {
   return useMutation({
     mutationFn: async (data: {
+      firstname: string;
+      lastname: string;
+      gender: string;
       email: string;
       password: string;
-      name: string;
+      confirm_password: string;
+      whats: string;
+      accept_terms: string;
+      country: string;
+      timezone: string;
+      source: string;
+      type: string;
     }) => {
       const response = await axiosBaseQuery()({
-        url: "/user/register",
+        url: "/auth/register/teacher",
         method: "POST",
         data,
       });
@@ -36,10 +34,77 @@ export const useRegister = () => {
       return response.data as { token: string; user: User };
     },
     onSuccess: (data) => {
-      toast.success("회원가입 성공");
+      toast.success("Teacher registration successful");
     },
     onError: () => {
-      toast.error("회원가입 실패");
+      toast.error("Teacher registration failed");
+    },
+  });
+};
+
+export const useRegisterwithStudent = () => {
+  return useMutation({
+    mutationFn: async (data: {
+      firstname: string;
+      lastname: string;
+      gender: string;
+      email: string;
+      password: string;
+      confirm_password: string;
+      whats: string;
+      accept_terms: string;
+      country: string;
+      timezone: string;
+      source: string;
+      type: string;
+    }) => {
+      const response = await axiosBaseQuery()({
+        url: "/auth/register/student",
+        method: "POST",
+        data,
+      });
+      if (response.error) throw new Error("Registration failed");
+      return response.data as { token: string; user: User };
+    },
+    onSuccess: (data) => {
+      toast.success("Student registration successful");
+    },
+    onError: () => {
+      toast.error("Student registration failed");
+    },
+  });
+};
+
+// Sign With Google
+export const useSignwithGoogle = () => {
+  return useMutation({
+    mutationFn: async (data: {
+      firstname: string;
+      lastname: string;
+      gender: string;
+      email: string;
+      password: string;
+      confirm_password: string;
+      whats: string;
+      accept_terms: string;
+      country: string;
+      timezone: string;
+      source: string;
+      type: string;
+    }) => {
+      const response = await axiosBaseQuery()({
+        url: "/auth/register/google",
+        method: "POST",
+        data,
+      });
+      if (response.error) throw new Error("Registration failed");
+      return response.data as { token: string; user: User };
+    },
+    onSuccess: (data) => {
+      toast.success("Sign in with Google successful");
+    },
+    onError: () => {
+      toast.error("Sign in with Google failed");
     },
   });
 };
@@ -49,7 +114,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: async (data: { email: string; password: string }) => {
       const response = await axiosBaseQuery()({
-        url: "/user/login",
+        url: "/auth/login",
         method: "POST",
         data,
       });
@@ -57,10 +122,10 @@ export const useLogin = () => {
       return response.data as { token: string; user: User };
     },
     onSuccess: () => {
-      toast.success("로그인 성공");
+      toast.success("Login successful");
     },
     onError: () => {
-      toast.error("로그인 실패");
+      toast.error("Login failed");
     },
   });
 };
@@ -71,7 +136,7 @@ export const useUserData = () => {
     queryKey: ["user"],
     queryFn: async () => {
       const response = await axiosBaseQuery()({
-        url: "/users/me",
+        url: "/auth/profile",
         method: "GET",
       });
       if (response.error) {
