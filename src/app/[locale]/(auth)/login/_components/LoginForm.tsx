@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,8 +18,28 @@ import Link from "next/link";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
-import { useLogin } from "@/store/api/useAuth";
+import { useLogin, useSignwithGoogle } from "@/store/api/useAuth";
+import { useAuth } from "@/contexts/AuthContext";
 import { Icon } from "@iconify/react";
+
+// Google OAuth types
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        oauth2: {
+          initTokenClient: (config: {
+            client_id: string;
+            scope: string;
+            callback: (tokenResponse: { access_token: string }) => void;
+          }) => {
+            requestAccessToken: () => void;
+          };
+        };
+      };
+    };
+  }
+}
 
 interface SignInFormData {
   email: string;
@@ -32,7 +52,9 @@ export default function LoginForm() {
   const router = useRouter();
   const params = useParams();
   const locale = params?.locale || "en";
+  const { setAuth } = useAuth();
   const { mutateAsync: loginUser, isPending } = useLogin();
+  const { mutateAsync: signInWithGoogle, isPending: isPendingGoogle } = useSignwithGoogle();
 
   const {
     register,
@@ -44,11 +66,88 @@ export default function LoginForm() {
     setError("");
 
     try {
-      await loginUser(data);
-      router.push(`/${locale}/dashboard`);
+      const result = await loginUser(data);
+    
+      if (result && result.access_token && result.user) {
+        setAuth(result);
+       
+        router.push(`/${locale}/dashboard`);
+      } else {
+        setError("Login failed. Please try again.");
+      }
     } catch (error: any) {
-      console.error(error);
-      setError("Invalid email or password. Please try again.");
+      console.error("Login error:", error);
+      // Error message is already shown via toast in the hook's onError
+      const errorMessage = error?.message || error?.response?.data?.message || "Invalid email or password. Please try again.";
+      setError(errorMessage);
+    }
+  };
+
+  // Load Google OAuth script
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.google) {
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, []);
+
+  const handleGoogleSignIn = async () => {
+    setError("");
+
+    try {
+      // Check if Google OAuth is loaded
+      if (typeof window === "undefined" || !window.google) {
+        setError("Google Sign-In is loading. Please wait a moment and try again.");
+        return;
+      }
+
+      const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+      if (!clientId) {
+        setError("Google Sign-In is not configured. Please contact support.");
+        return;
+      }
+
+      // Use Google Identity Services
+      window.google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: "email profile",
+        callback: async (tokenResponse: any) => {
+          try {
+            // Get user info from Google
+            const userInfoResponse = await fetch(
+              `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${tokenResponse.access_token}`
+            );
+            const userInfo = await userInfoResponse.json();
+
+            // Call backend with Google user info
+            const result = await signInWithGoogle({
+              email: userInfo.email,
+              access_token: tokenResponse.access_token,
+            });
+
+            if (result && result.access_token && result.user) {
+              setAuth(result);
+              router.push(`/${locale}/dashboard`);
+            } else {
+              setError("Google sign in failed. Please try again.");
+            }
+          } catch (error: any) {
+            console.error("Google sign in error:", error);
+            const errorMessage = error?.message || "Google sign in failed. Please try again.";
+            setError(errorMessage);
+          }
+        },
+      }).requestAccessToken();
+    } catch (error: any) {
+      console.error("Google sign in initialization error:", error);
+      setError("Failed to initialize Google Sign-In. Please try again.");
     }
   };
 
@@ -142,7 +241,7 @@ export default function LoginForm() {
 
           <Button
             type="submit"
-            className="w-full h-11 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 bg-primary text-white hover:opacity-90 active:scale-[0.98]"
+            className="w-full h-11 text-lg cursor-pointer font-medium shadow-lg hover:shadow-xl transition-all duration-300 bg-primary text-white hover:opacity-90 active:scale-[0.98]"
             disabled={isPending}
           >
             {isPending ? (
@@ -166,10 +265,21 @@ export default function LoginForm() {
           <Button
             type="button"
             variant="outline"
-            className="w-full h-11 bg-white/50 dark:bg-black/30 backdrop-blur-sm border-gray-200 dark:border-gray-800 hover:bg-white dark:hover:bg-black transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98]"
+            onClick={handleGoogleSignIn}
+            disabled={isPendingGoogle || isPending}
+            className="w-full h-11 cursor-pointer bg-white/50 dark:bg-black/30 backdrop-blur-sm border-gray-200 dark:border-gray-800 hover:bg-white dark:hover:bg-black transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Icon icon="logos:google-icon" width="20" height="20" />
-            <span className="font-medium">Sign In with Google</span>
+            {isPendingGoogle ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span className="font-medium">Signing in...</span>
+              </>
+            ) : (
+              <>
+                <Icon icon="logos:google-icon" width="20" height="20" />
+                <span className="font-medium">Sign In with Google</span>
+              </>
+            )}
           </Button>
 
           <div className="text-center text-sm mt-4">

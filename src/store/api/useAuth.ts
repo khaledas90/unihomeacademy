@@ -9,8 +9,14 @@ export interface UserData {
   user: User;
 }
 
+export interface AuthResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number | null;
+  user: User;
+}
+
 export const useRegisterwithTeacher = () => {
-  const { login } = useAppStore();
   return useMutation({
     mutationFn: async (data: {
       firstname: string;
@@ -35,18 +41,16 @@ export const useRegisterwithTeacher = () => {
         const errorMessage = (response.error.data as any)?.message || "Registration failed";
         throw new Error(errorMessage);
       }
-      return response.data as { token: string; user: User };
+      return response.data as AuthResponse;
     },
     onSuccess: (data) => {
-      if (data.token) {
-        setCookie("token", data.token, {
+      
+      if (data.access_token) {
+        setCookie("access_token", data.access_token, {
           maxAge: 60 * 60 * 24 * 7, // 7 days
           path: "/",
         });
-      }
-      if (data.user) {
-        login(data.token, data.user);
-      }
+      } 
       toast.success("Teacher registration successful! Welcome to UniHome Academy");
     },
     onError: (error: any) => {
@@ -77,48 +81,59 @@ export const useRegisterwithStudent = () => {
         method: "POST",
         data,
       });
-      if (response.error) throw new Error("Registration failed");
-      return response.data as { token: string; user: User };
+      if (response.error) {
+        const errorMessage = (response.error.data as any)?.message || "Registration failed";
+        throw new Error(errorMessage);
+      }
+      return response.data as AuthResponse;
     },
-    onSuccess: (data) => {
-      toast.success("Student registration successful");
+    onSuccess: (data) => { 
+      if (data.access_token) {
+        setCookie("access_token", data.access_token, {
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+          path: "/",
+        });
+      } 
+      toast.success("Student registration successful! Welcome to UniHome Academy");
     },
-    onError: () => {
-      toast.error("Student registration failed");
+    onError: (error: any) => {
+      const errorMessage = error?.message || error?.response?.data?.message || "Student registration failed. Please try again.";
+      toast.error(errorMessage);
     },
   });
 };
 
-// Sign With Google
+// Sign With Google (Login)
 export const useSignwithGoogle = () => {
   return useMutation({
-    mutationFn: async (data: {
-      firstname: string;
-      lastname: string;
-      gender: string;
+    mutationFn: async (data: { 
       email: string;
-      password: string;
-      confirm_password: string;
-      whats: string;
-      accept_terms: string;
-      country: string;
-      timezone: string;
-      source: string;
-      type: string;
+      google_id?: string;
+      access_token?: string;
     }) => {
       const response = await axiosBaseQuery()({
-        url: "/auth/register/google",
+        url: "/auth/login/google",
         method: "POST",
         data,
       });
-      if (response.error) throw new Error("Registration failed");
-      return response.data as { token: string; user: User };
+      if (response.error) {
+        const errorMessage = (response.error.data as any)?.message || "Google sign in failed";
+        throw new Error(errorMessage);
+      }
+      return response.data as AuthResponse;
     },
     onSuccess: (data) => {
-      toast.success("Sign in with Google successful");
+      if (data.access_token) {
+        setCookie("access_token", data.access_token, {
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+          path: "/",
+        });
+      }
+      toast.success("Sign in with Google successful! Welcome back");
     },
-    onError: () => {
-      toast.error("Sign in with Google failed");
+    onError: (error: any) => {
+      const errorMessage = error?.message || error?.response?.data?.message || "Google sign in failed. Please try again.";
+      toast.error(errorMessage);
     },
   });
 };
@@ -132,14 +147,24 @@ export const useLogin = () => {
         method: "POST",
         data,
       });
-      if (response.error) throw new Error("Login failed");
-      return response.data as { token: string; user: User };
+      if (response.error) {
+        const errorMessage = (response.error.data as any)?.message || "Login failed";
+        throw new Error(errorMessage);
+      }
+      return response.data as AuthResponse;
     },
-    onSuccess: () => {
-      toast.success("Login successful");
+    onSuccess: (data) => { 
+      if (data.access_token) {
+        setCookie("access_token", data.access_token, {
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+          path: "/",
+        });
+      } 
+      toast.success("Login successful! Welcome back");
     },
-    onError: () => {
-      toast.error("Login failed");
+    onError: (error: any) => {
+      const errorMessage = error?.message || error?.response?.data?.message || "Invalid email or password. Please try again.";
+      toast.error(errorMessage);
     },
   });
 };
@@ -156,7 +181,7 @@ export const useUserData = () => {
       if (response.error) {
         console.error("Error fetching user data:", response.error);
         if (response.error.status === 401) {
-          deleteCookie("token");
+          deleteCookie("access_token");
           window.location.href = "/login";
         }
         throw new Error("Failed to fetch user data");

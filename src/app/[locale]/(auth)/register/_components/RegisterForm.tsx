@@ -32,9 +32,8 @@ import Link from "next/link";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
 import logo from "@/assets/logo.png";
-import { setCookie } from "cookies-next/client";
 import { useRegisterwithTeacher, useRegisterwithStudent } from "@/store/api/useAuth";
-import useAppStore from "@/store/store";
+import { useAuth } from "@/contexts/AuthContext";
 import { TermsAndConditionsContent } from "./TermsAndConditions";
 
 interface RegisterFormData {
@@ -60,7 +59,7 @@ export default function RegisterForm() {
     const router = useRouter();
     const params = useParams();
     const locale = params?.locale || "en";
-    const { login } = useAppStore();
+    const { setAuth } = useAuth();
     const { mutateAsync: registerTeacher, isPending: isPendingTeacher } = useRegisterwithTeacher();
     const { mutateAsync: registerStudent, isPending: isPendingStudent } = useRegisterwithStudent();
     
@@ -127,28 +126,18 @@ export default function RegisterForm() {
                 timezone: data.timezone,
                 source: data.source,
                 type: data.type,
-                accept_terms: data.accept_terms ? "1" : "0", // Convert boolean to string
+                accept_terms: data.accept_terms ? "1" : "0",  
             };
+ 
+            const result = await (userType === "Teacher" 
+                ? registerTeacher(registrationData)
+                : registerStudent(registrationData));
 
-            // Call appropriate registration hook based on user type
-            const result = userType === "Teacher" 
-                ? await registerTeacher(registrationData)
-                : await registerStudent(registrationData);
-
-            // Store token in cookie
-            if (result.token) {
-                setCookie("token", result.token, {
-                    maxAge: 60 * 60 * 24 * 7, // 7 days
-                    path: "/",
-                });
+            // Save auth data to AuthContext
+            if (result) {
+                setAuth(result);
             }
-
-            // Store user in store
-            if (result.user) {
-                login(result.token, result.user);
-            }
-
-            // Navigate to dashboard
+ 
             router.push(`/${locale}/dashboard`);
         } catch (err: any) {
             console.error("Registration error:", err);
@@ -393,7 +382,7 @@ export default function RegisterForm() {
 
                     <Button
                         type="submit"
-                        className="w-full h-11 text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 bg-primary text-white hover:opacity-90 active:scale-[0.98]"
+                        className="w-full h-11 cursor-pointer text-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 bg-primary text-white hover:opacity-90 active:scale-[0.98]"
                         disabled={isPending}
                     >
                         {isPending ? (

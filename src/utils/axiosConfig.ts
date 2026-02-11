@@ -6,7 +6,7 @@ export const mainApi = axios.create({
 });
 
 mainApi.interceptors.request.use((config) => {
-  const token = getCookie("token");
+  const token = getCookie("access_token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
     config.headers["Content-Type"] = "application/json";
@@ -42,7 +42,7 @@ export const axiosBaseQuery =
           err.response?.status === 401 &&
           window.location.pathname !== "/login"
         ) {
-          deleteCookie("token");
+          deleteCookie("access_token");
           if (!window.location.href.endsWith("login")) {
             window.location.href = "/login";
             toast({
