@@ -37,10 +37,16 @@ export default function Hero() {
             <div>
               <Button
                 size="lg"
-                className="bg-primary hover:bg-primary/90 text-white font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                className="bg-primary cursor-pointer hover:bg-primary/90 text-white font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
               >
                 Explore Courses
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button
+                size="lg"
+                className="bg-transparent border border-primary text-primary hover:bg-primary hover:text-white mx-4 cursor-pointer  font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+              >
+                About Us
               </Button>
             </div>
 
@@ -79,10 +85,11 @@ export default function Hero() {
                   <Image
                     src={heroImage}
                     alt="logo"
-                    width={500}
+                    width={200}
+
                     quality={100}
-                    className="rounded-full object-cover"
-                    height={100}
+                    className="w-[80%] h-full object-cover"
+                    height={200}
                   />
                 </div>
               </div>

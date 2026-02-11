@@ -51,19 +51,18 @@ export default function HowToUsePage() {
 
     return (
         <div className="min-h-screen pt-32 pb-20 bg-white">
-            {/* Hero Section */}
+            
             <section className="container mx-auto px-4 text-center mb-32">
-                <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">
+                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
                     Your Success <span className="text-primary italic">Simplified</span>
                 </h1>
                 <p className="text-lg text-slate-500 max-w-xl mx-auto leading-relaxed">
                     Getting started with UniHome Academy is easy. Follow these four steps to begin your journey to English mastery.
                 </p>
             </section>
-
-            {/* Steps Visual Section */}
+ 
             <section className="container mx-auto px-4 mb-40 relative">
-                {/* Connection Line (Desktop) */}
+               
                 <div className="hidden lg:block absolute top-1/2 left-0 w-full h-1 bg-slate-100 -z-10 translate-y-[-50%]" />
 
                 <div className="grid lg:grid-cols-4 gap-8">
@@ -88,8 +87,7 @@ export default function HowToUsePage() {
                     ))}
                 </div>
             </section>
-
-            {/* Video Demo Section */}
+ 
             <section className="bg-slate-50 py-32 overflow-hidden mb-32">
                 <div className="container mx-auto px-4">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -114,8 +112,7 @@ export default function HowToUsePage() {
                     </div>
                 </div>
             </section>
-
-            {/* FAQ Section */}
+ 
             <section className="container mx-auto px-4 max-w-4xl">
                 <div className="text-center mb-16">
                     <HelpCircle className="w-12 h-12 text-primary mx-auto mb-4" />
@@ -141,11 +138,10 @@ export default function HowToUsePage() {
                     ))}
                 </Accordion>
             </section>
-
-            {/* Final CTA */}
+ 
             <section className="text-center py-32">
                 <h2 className="text-3xl font-bold mb-8">Ready to try it yourself?</h2>
-                <Button className="rounded-full px-12 h-16 text-lg font-black shadow-2xl hover:scale-105 transition-transform">
+                <Button className="rounded-full cursor-pointer px-12 h-16 text-lg font-black shadow-md">
                     Register for Free <ArrowRight className="ml-2 w-6 h-6" />
                 </Button>
             </section>

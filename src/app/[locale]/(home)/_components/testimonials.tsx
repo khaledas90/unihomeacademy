@@ -102,13 +102,12 @@ export default function Testimonials() {
       "-=0.2"
     );
   });
-
-  // Handle Opening Animation
+ 
   useEffect(() => {
     if (selectedId && phoneRef.current && overlayRef.current) {
       gsap.set(overlayRef.current, { opacity: 0 });
       gsap.set(phoneRef.current, {
-        scale: 0.5,
+        scale: 0.4,
         rotationY: -45,
         y: 200,
         opacity: 0
@@ -121,19 +120,17 @@ export default function Testimonials() {
       });
 
       gsap.to(phoneRef.current, {
-        scale: 1,
+        scale: 0.85,
         rotationY: 0,
         y: 0,
         opacity: 1,
         duration: 0.8,
-        ease: "elastic.out(1, 0.75)",
-        // Use standard CSS transforms for better performance
+        ease: "elastic.out(1, 0.75)", 
         force3D: true,
       });
     }
   }, [selectedId]);
-
-  // Stop/Start Autoplay based on selection
+ 
   useEffect(() => {
     if (!emblaApi) return;
     const autoplay = emblaApi.plugins().autoplay;
@@ -151,7 +148,7 @@ export default function Testimonials() {
   return (
     <section className="py-24 bg-gradient-to-b from-white to-[#fff5f2] overflow-hidden" ref={containerRef}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+      
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -167,8 +164,7 @@ export default function Testimonials() {
             English skills with UniHome
           </p>
         </motion.div>
-
-        {/* Testimonials Carousel */}
+ 
         <div className="relative max-w-6xl mx-auto group">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex -ml-4 md:-ml-8">
@@ -184,14 +180,13 @@ export default function Testimonials() {
               ))}
             </div>
           </div>
-
-          {/* Navigation Buttons */}
+ 
           <div className="absolute top-1/2 -left-4 md:-left-12 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <Button
               onClick={scrollPrev}
               variant="outline"
               size="icon"
-              className="rounded-full bg-white shadow-lg border-primary/10 hover:bg-primary hover:text-white"
+              className="rounded-full cursor-pointer bg-white shadow-lg border-primary/10 hover:bg-primary hover:text-white"
             >
               <ChevronLeft className="w-5 h-5" />
             </Button>
@@ -201,40 +196,37 @@ export default function Testimonials() {
               onClick={scrollNext}
               variant="outline"
               size="icon"
-              className="rounded-full bg-white shadow-lg border-primary/10 hover:bg-primary hover:text-white"
+              className="rounded-full cursor-pointer bg-white shadow-lg border-primary/10 hover:bg-primary hover:text-white"
             >
               <ChevronRight className="w-5 h-5" />
             </Button>
           </div>
         </div>
       </div>
-
-      {/* GSAP Modal */}
+ 
       <AnimatePresence>
         {selectedId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden">
-            {/* Overlay */}
+          
             <div
               ref={overlayRef}
               className="absolute inset-0 bg-black/60 backdrop-blur-md cursor-pointer"
               onClick={onClose}
             />
-
-            {/* Modal Content */}
-            <div ref={modalRef} className="relative w-full max-w-sm z-10 perspective-1000 pointer-events-none">
+ 
+            <div ref={modalRef} className="relative w-full max-w-[390px] z-10 perspective-1000 pointer-events-none">
               <div
                 ref={phoneRef}
-                className="w-full  will-change-transform"
+                className="w-full will-change-transform"
               >
                 {selectedTestimonial && (
                   <Iphone src={selectedTestimonial.image} className="w-full" />
                 )}
               </div>
-
-              {/* Close Button */}
+ 
               <button
                 onClick={onClose}
-                className="absolute -top-12 right-0 md:-right-16 text-white hover:text-primary transition-colors p-2 pointer-events-auto"
+                className="absolute cursor-pointer -top-12 right-0 md:-right-16 text-white hover:text-primary transition-colors p-2 pointer-events-auto"
               >
                 <X className="w-8 h-8" />
               </button>

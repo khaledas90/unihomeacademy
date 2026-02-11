@@ -6,11 +6,11 @@ import heroImage from "@/assets/students-learning-together.jpg";
 export default function AboutPage() {
     return (
         <div className="flex flex-col min-h-screen">
-            {/* Hero Section */}
+        
             <section className="relative pt-32 pb-20 items-center overflow-hidden bg-slate-50">
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="max-w-4xl mx-auto text-center space-y-8">
-                        <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight text-slate-900">
+                        <h1 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight text-slate-900">
                             Transforming Lives Through <br />
                             <span className="bg-primary bg-clip-text text-transparent italic">English Excellence</span>
                         </h1>
@@ -19,13 +19,11 @@ export default function AboutPage() {
                         </p>
                     </div>
                 </div>
-
-                {/* Background blobs for depth */}
+ 
                 <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl animate-pulse" />
                 <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-3xl" />
             </section>
-
-            {/* Image & Story Section */}
+ 
             <section className="py-20">
                 <div className="container mx-auto px-4">
                     <div className="grid lg:grid-cols-2 gap-16 items-center">

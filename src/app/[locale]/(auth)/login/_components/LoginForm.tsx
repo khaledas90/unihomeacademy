@@ -53,7 +53,7 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-xl bg-white/60 dark:bg-black/60 backdrop-blur-xl shadow-2xl animate-in fade-in slide-in-from-left-10 duration-700 border border-white/20 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/5">
+    <Card className="w-full max-w-xl bg-white/60 dark:bg-black/60 backdrop-blur-xl shadow-md animate-in fade-in slide-in-from-left-10 duration-700 border border-white/20 ">
       <CardHeader className="space-y-4 pb-2">
         <div className="flex justify-center mb-2">
           <div className="relative w-40 h-16 transition-transform duration-300 hover:scale-105">

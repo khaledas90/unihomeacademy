@@ -55,14 +55,14 @@ export default function WhyUsPage() {
 
     return (
         <div className="min-h-screen pt-32 pb-20 overflow-hidden">
-            {/* Hero Section */}
+         
             <section className="container mx-auto px-4 text-center mb-24 relative">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] -z-10" />
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
                     <TrendingUp className="w-4 h-4 text-primary" />
                     <span className="text-primary font-bold text-xs uppercase tracking-widest">The UniHome Advantage</span>
                 </div>
-                <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-8">
+                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-8">
                     The Smarter Way to <br />
                     <span className="italic underline decoration-primary/30">Master English</span>
                 </h1>
@@ -70,8 +70,7 @@ export default function WhyUsPage() {
                     We combined professional expertise with cutting-edge technology to build a platform that actually delivers results.
                 </p>
             </section>
-
-            {/* Main Benefits Grid */}
+ 
             <section className="container mx-auto px-4 mb-32">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
                     {benefits.map((benefit, idx) => (
@@ -87,8 +86,7 @@ export default function WhyUsPage() {
                     ))}
                 </div>
             </section>
-
-            {/* Comparison Section */}
+ 
             <section className="bg-slate-900 py-24 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[150px] mix-blend-screen" />
 
@@ -131,15 +129,14 @@ export default function WhyUsPage() {
                     </div>
                 </div>
             </section>
-
-            {/* Trust Quote */}
+ 
             <section className="py-32 container mx-auto px-4 text-center">
                 <div className="max-w-3xl mx-auto">
                     <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-12 italic">
                         "We don't just teach English; we build the bridge to your next career breakthrough."
                     </h2>
                     <div className="flex justify-center gap-4">
-                        <Button size="lg" className="rounded-full px-10 h-14 text-lg font-bold">
+                        <Button size="lg" className="rounded-full cursor-pointer px-10 h-14 text-lg font-bold">
                             Join Us Today <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
                     </div>
