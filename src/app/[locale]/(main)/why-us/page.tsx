@@ -60,11 +60,11 @@ export default function WhyUsPage() {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] -z-10" />
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
                     <TrendingUp className="w-4 h-4 text-primary" />
-                    <span className="text-primary font-bold text-xs uppercase tracking-widest">The UniHome Advantage</span>
+                    <span className="text-primary  text-xs uppercase tracking-widest">The UniHome Advantage</span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-8">
+                <h1 className="text-4xl md:text-5xl  text-slate-900 leading-tight mb-8">
                     The Smarter Way to <br />
-                    <span className="italic underline decoration-primary/30">Master English</span>
+                    <span className=" underline decoration-primary/30">Master English</span>
                 </h1>
                 <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
                     We combined professional expertise with cutting-edge technology to build a platform that actually delivers results.
@@ -78,7 +78,7 @@ export default function WhyUsPage() {
                             <div className={`w-14 h-14 rounded-2xl ${benefit.color} flex items-center justify-center mb-8 transform group-hover:rotate-6 transition-transform`}>
                                 <benefit.icon className="w-8 h-8" />
                             </div>
-                            <h3 className="text-2xl font-bold text-slate-900 mb-4">{benefit.title}</h3>
+                            <h3 className="text-2xl  text-slate-900 mb-4">{benefit.title}</h3>
                             <p className="text-slate-500 leading-relaxed mb-6">
                                 {benefit.desc}
                             </p>
@@ -92,13 +92,13 @@ export default function WhyUsPage() {
 
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="text-center mb-20 text-white">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6">Unrivaled Experience</h2>
+                        <h2 className="text-4xl md:text-5xl  mb-6">Unrivaled Experience</h2>
                         <p className="text-slate-400 max-w-xl mx-auto">How we compare to traditional learning methods.</p>
                     </div>
 
                     <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
                         <div className="p-8 rounded-3xl bg-white/5 border border-white/10">
-                            <h4 className="text-xl font-bold text-white mb-8 border-b border-white/10 pb-4">Traditional Schooling</h4>
+                            <h4 className="text-xl  text-white mb-8 border-b border-white/10 pb-4">Traditional Schooling</h4>
                             <ul className="space-y-6">
                                 {["Fixed, rigid schedules", "Generic textbook material", "Large, passive classes", "Slow feedback loops"].map((item, idx) => (
                                     <li key={idx} className="flex items-center gap-3 text-slate-400 text-sm">
@@ -112,7 +112,7 @@ export default function WhyUsPage() {
                             <div className="absolute top-4 right-4 animate-bounce">
                                 <Rocket className="text-primary w-8 h-8" />
                             </div>
-                            <h4 className="text-xl font-bold text-white mb-8 border-b border-primary/20 pb-4">UniHome Academy</h4>
+                            <h4 className="text-xl  text-white mb-8 border-b border-primary/20 pb-4">UniHome Academy</h4>
                             <ul className="space-y-6">
                                 {[
                                     "Complete flexibility 24/7",
@@ -132,11 +132,11 @@ export default function WhyUsPage() {
  
             <section className="py-32 container mx-auto px-4 text-center">
                 <div className="max-w-3xl mx-auto">
-                    <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-12 italic">
+                    <h2 className="text-3xl md:text-5xl  text-slate-900 mb-12 ">
                         "We don't just teach English; we build the bridge to your next career breakthrough."
                     </h2>
                     <div className="flex justify-center gap-4">
-                        <Button size="lg" className="rounded-full cursor-pointer px-10 h-14 text-lg font-bold">
+                        <Button size="lg" className="rounded-full cursor-pointer px-10 h-14 text-lg ">
                             Join Us Today <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
                     </div>

@@ -53,8 +53,8 @@ export default function HowToUsePage() {
         <div className="min-h-screen pt-32 pb-20 bg-white">
             
             <section className="container mx-auto px-4 text-center mb-32">
-                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                    Your Success <span className="text-primary italic">Simplified</span>
+                <h1 className="text-4xl md:text-5xl  text-slate-900 mb-6">
+                    Your Success <span className="text-primary ">Simplified</span>
                 </h1>
                 <p className="text-lg text-slate-500 max-w-xl mx-auto leading-relaxed">
                     Getting started with UniHome Academy is easy. Follow these four steps to begin your journey to English mastery.
@@ -70,11 +70,11 @@ export default function HowToUsePage() {
                         <div key={idx} className="group relative text-center">
                             <div className={`w-24 h-24 mx-auto rounded-[2rem] bg-gradient-to-br ${step.color} flex items-center justify-center text-white mb-8 shadow-xl transform group-hover:-translate-y-2 group-hover:rotate-6 transition-all duration-300`}>
                                 <step.icon className="w-10 h-10" />
-                                <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-slate-900 border-4 border-white flex items-center justify-center font-bold text-sm">
+                                <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-slate-900 border-4 border-white flex items-center justify-center  text-sm">
                                     {step.number}
                                 </div>
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-4">{step.title}</h3>
+                            <h3 className="text-xl  text-slate-900 mb-4">{step.title}</h3>
                             <p className="text-slate-500 text-sm leading-relaxed px-4">
                                 {step.desc}
                             </p>
@@ -93,7 +93,7 @@ export default function HowToUsePage() {
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <div className="space-y-8">
                             <div className="w-16 h-1 bg-primary rounded-full" />
-                            <h2 className="text-4xl font-bold text-slate-900">See the Platform in Action</h2>
+                            <h2 className="text-4xl  text-slate-900">See the Platform in Action</h2>
                             <p className="text-lg text-slate-600 leading-relaxed">
                                 Take a quick 2-minute tour of our interactive classroom features, the booking portal, and our unique progress tracking system.
                             </p>
@@ -116,7 +116,7 @@ export default function HowToUsePage() {
             <section className="container mx-auto px-4 max-w-4xl">
                 <div className="text-center mb-16">
                     <HelpCircle className="w-12 h-12 text-primary mx-auto mb-4" />
-                    <h2 className="text-4xl font-bold text-slate-900">Have Questions?</h2>
+                    <h2 className="text-4xl  text-slate-900">Have Questions?</h2>
                     <p className="text-slate-500">Everything you need to know about getting started.</p>
                 </div>
 
@@ -128,7 +128,7 @@ export default function HowToUsePage() {
                         { q: "Can I change my teacher?", a: "Absolutely! You are free to book sessions with any teacher you like. We actually encourage trying different instructors to experience varied teaching styles." }
                     ].map((faq, idx) => (
                         <AccordionItem key={idx} value={`item-${idx}`} className="border border-slate-200 rounded-2xl px-6 bg-white overflow-hidden shadow-sm">
-                            <AccordionTrigger className="text-lg font-bold text-slate-900 hover:text-primary transition-colors py-6">
+                            <AccordionTrigger className="text-lg  text-slate-900 hover:text-primary transition-colors py-6">
                                 {faq.q}
                             </AccordionTrigger>
                             <AccordionContent className="text-slate-600 text-base pb-6 leading-relaxed">
@@ -140,8 +140,8 @@ export default function HowToUsePage() {
             </section>
  
             <section className="text-center py-32">
-                <h2 className="text-3xl font-bold mb-8">Ready to try it yourself?</h2>
-                <Button className="rounded-full cursor-pointer px-12 h-16 text-lg font-black shadow-md">
+                <h2 className="text-3xl  mb-8">Ready to try it yourself?</h2>
+                <Button className="rounded-full cursor-pointer px-12 h-16 text-lg  shadow-md">
                     Register for Free <ArrowRight className="ml-2 w-6 h-6" />
                 </Button>
             </section>

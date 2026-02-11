@@ -10,9 +10,9 @@ export default function AboutPage() {
             <section className="relative pt-32 pb-20 items-center overflow-hidden bg-slate-50">
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="max-w-4xl mx-auto text-center space-y-8">
-                        <h1 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight text-slate-900">
+                        <h1 className="text-4xl md:text-6xl  leading-tight tracking-tight text-slate-900">
                             Transforming Lives Through <br />
-                            <span className="bg-primary bg-clip-text text-transparent italic">English Excellence</span>
+                            <span className="bg-primary bg-clip-text text-transparent ">English Excellence</span>
                         </h1>
                         <p className="text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
                             UniHome Academy is more than just a language school. We're a global community dedicated to helping you achieve your professional and personal goals through English.
@@ -43,7 +43,7 @@ export default function AboutPage() {
                                 <ShieldCheck className="w-5 h-5 text-primary" />
                                 <span className="text-primary font-semibold text-sm uppercase tracking-wider">Our Legacy</span>
                             </div>
-                            <h2 className="text-4xl font-bold text-slate-900">Empowering Students Worldwide Since 2020</h2>
+                            <h2 className="text-4xl  text-slate-900">Empowering Students Worldwide Since 2020</h2>
                             <p className="text-lg text-slate-600 leading-relaxed">
                                 Founded with a vision to bridge the communication gap in the global market, UniHome Academy provides high-quality English education that is accessible, affordable, and effective.
                             </p>
@@ -62,7 +62,7 @@ export default function AboutPage() {
                                             </div>
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-slate-900">{item.title}</h4>
+                                            <h4 className=" text-slate-900">{item.title}</h4>
                                             <p className="text-sm text-slate-600">{item.desc}</p>
                                         </div>
                                     </div>
@@ -81,7 +81,7 @@ export default function AboutPage() {
                             <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-8 transition-transform duration-300 group-hover:scale-110">
                                 <Globe className="w-8 h-8 text-primary" />
                             </div>
-                            <h3 className="text-3xl font-bold mb-6 italic">Our Mission</h3>
+                            <h3 className="text-3xl  mb-6 ">Our Mission</h3>
                             <p className="text-lg text-slate-400 leading-relaxed">
                                 To democratize English education by providing a premium learning experience that equips students with the linguistic tools necessary for global competition, personal growth, and cross-cultural understanding.
                             </p>
@@ -91,7 +91,7 @@ export default function AboutPage() {
                             <div className="w-16 h-16 rounded-2xl bg-secondary/20 flex items-center justify-center mb-8 transition-transform duration-300 group-hover:scale-110">
                                 <GraduationCap className="w-8 h-8 text-secondary" />
                             </div>
-                            <h3 className="text-3xl font-bold mb-6 italic">Our Vision</h3>
+                            <h3 className="text-3xl  mb-6 ">Our Vision</h3>
                             <p className="text-lg text-slate-400 leading-relaxed">
                                 To become the world's most trusted partner for career-focused English learning, recognized for our results-driven methods and our vibrant community of successful professionals.
                             </p>
@@ -120,7 +120,7 @@ export default function AboutPage() {
                                 <div className="w-12 h-12 mx-auto rounded-full bg-slate-100 flex items-center justify-center mb-4">
                                     <stat.icon className="w-6 h-6 text-primary" />
                                 </div>
-                                <div className="text-4xl font-bold text-slate-900 leading-none">{stat.value}</div>
+                                <div className="text-4xl  text-slate-900 leading-none">{stat.value}</div>
                                 <div className="text-sm font-medium text-slate-500 uppercase tracking-widest">{stat.label}</div>
                             </div>
                         ))}

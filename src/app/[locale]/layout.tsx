@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -7,8 +7,6 @@ import Providers from "./providers";
 import { Toaster } from "sonner";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-import Header from "@/components/Layout/header/header";
-import Footer from "@/components/Layout/footer/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +16,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
+  variable: "--font-ibm-plex-sans-arabic",
+  subsets: ["latin", "arabic"],
+  weight: ["200", "300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {};
@@ -42,7 +46,7 @@ export default async function RootLayout({
       <html
         lang={locale}
         dir={locale === "ar" ? "rtl" : "ltr"}
-        className={`${geistSans.variable} ${geistMono.variable}`}
+        className={`${ibmPlexSansArabic.variable} ${geistSans.variable} ${geistMono.variable} ${locale === 'ar' ? 'font-[family-name:var(--font-ibm-plex-sans-arabic)]' : 'font-sans'}`}
         suppressHydrationWarning
       >
         <body className="antialiased">

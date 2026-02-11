@@ -46,9 +46,9 @@ export default function ContactUsPage() {
             <div className="container mx-auto px-4">
                 {/* Header */}
                 <div className="max-w-3xl mb-20">
-                    <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-8">
+                    <h1 className="text-5xl md:text-7xl  text-slate-900 leading-tight mb-8">
                         Let's Start a <br />
-                        <span className="text-primary italic">Conversation</span>
+                        <span className="text-primary ">Conversation</span>
                     </h1>
                     <p className="text-xl text-slate-500 leading-relaxed">
                         Have questions about our courses, teachers, or corporate training? Our team is ready to help you navigate your journey.
@@ -69,8 +69,8 @@ export default function ContactUsPage() {
                                         <item.icon className="w-8 h-8" />
                                     </div>
                                     <div>
-                                        <h4 className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">{item.title}</h4>
-                                        <p className="text-xl font-bold text-slate-900">{item.value}</p>
+                                        <h4 className="text-slate-400 text-xs  uppercase tracking-widest mb-1">{item.title}</h4>
+                                        <p className="text-xl  text-slate-900">{item.value}</p>
                                     </div>
                                 </a>
                             ))}
@@ -82,11 +82,11 @@ export default function ContactUsPage() {
                             <div className="relative z-10 space-y-6">
                                 <div className="flex items-center gap-3">
                                     <Clock className="w-5 h-5 text-primary" />
-                                    <span className="font-bold">Business Hours:</span> Mon - Fri, 9am - 6pm (GMT+2)
+                                    <span className="">Business Hours:</span> Mon - Fri, 9am - 6pm (GMT+2)
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <Globe className="w-5 h-5 text-primary" />
-                                    <span className="font-bold">Languages:</span> English, Arabic, French
+                                    <span className="">Languages:</span> English, Arabic, French
                                 </div>
                                 <div className="flex gap-4 pt-4 border-t border-white/10">
                                     {[Facebook, Instagram, Linkedin].map((Icon, i) => (
@@ -105,7 +105,7 @@ export default function ContactUsPage() {
                             <form className="space-y-8">
                                 <div className="grid md:grid-cols-2 gap-8">
                                     <div className="space-y-3">
-                                        <Label htmlFor="name" className="font-bold text-sm text-slate-700 ml-1">Full Name</Label>
+                                        <Label htmlFor="name" className=" text-sm text-slate-700 ml-1">Full Name</Label>
                                         <Input
                                             id="name"
                                             placeholder="John Doe"
@@ -113,7 +113,7 @@ export default function ContactUsPage() {
                                         />
                                     </div>
                                     <div className="space-y-3">
-                                        <Label htmlFor="email" className="font-bold text-sm text-slate-700 ml-1">Email Address</Label>
+                                        <Label htmlFor="email" className=" text-sm text-slate-700 ml-1">Email Address</Label>
                                         <Input
                                             id="email"
                                             type="email"
@@ -124,7 +124,7 @@ export default function ContactUsPage() {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <Label htmlFor="subject" className="font-bold text-sm text-slate-700 ml-1">Subject</Label>
+                                    <Label htmlFor="subject" className=" text-sm text-slate-700 ml-1">Subject</Label>
                                     <Input
                                         id="subject"
                                         placeholder="How can we help?"
@@ -133,7 +133,7 @@ export default function ContactUsPage() {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <Label htmlFor="message" className="font-bold text-sm text-slate-700 ml-1">Your Message</Label>
+                                    <Label htmlFor="message" className=" text-sm text-slate-700 ml-1">Your Message</Label>
                                     <Textarea
                                         id="message"
                                         placeholder="Tell us more about your inquiry..."
@@ -141,7 +141,7 @@ export default function ContactUsPage() {
                                     />
                                 </div>
 
-                                <Button size="lg" className="w-full h-16 rounded-2xl text-lg font-black shadow-xl hover:shadow-primary/20 bg-primary group transition-all duration-300">
+                                <Button size="lg" className="w-full h-16 rounded-2xl text-lg  shadow-xl hover:shadow-primary/20 bg-primary group transition-all duration-300">
                                     Send Message <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                 </Button>
                             </form>

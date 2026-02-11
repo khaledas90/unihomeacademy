@@ -2,7 +2,7 @@ import React from "react";
 
 export const TermsAndConditionsContent = () => {
     return (
-        <div className="space-y-4 text-sm text-muted-foreground leading-relaxed overflow-y-auto max-h-[60vh] pr-2">
+        <div className="text-sm text-muted-foreground leading-relaxed overflow-y-auto max-h-[60vh] pe-1 scrollbar-thin">
             <p>
                 Protecting your private information is our priority. This Statement of
                 Privacy applies to http://www.unih0me.com and Unihome and governs data
