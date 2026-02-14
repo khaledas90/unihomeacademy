@@ -26,6 +26,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip as DescriptionTooltip } from "@/components/ui/tooltip-card";
 import { useTeachers } from "@/store/api/useTeachers";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -114,11 +115,11 @@ export default function TeachersPage() {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <Badge variant="outline" className="px-5 py-1.5 border-primary/20 text-primary font-black bg-primary/5 uppercase tracking-widest text-[10px]">
+                            <Badge variant="outline" className="px-5 py-1.5 border-primary/20 text-primary  bg-primary/5 uppercase tracking-widest text-[10px]">
                                 World-Class Faculty
                             </Badge>
                         </motion.div>
-                        <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+                        <h1 className="text-4xl md:text-5xl  text-slate-900 tracking-tight">
                             Meet Your <span className="text-primary">Success</span> Partners
                         </h1>
                         <p className="text-base text-slate-500 max-w-xl mx-auto font-medium">
@@ -228,7 +229,7 @@ export default function TeachersPage() {
                                     </div>
                                     <button
                                         onClick={resetFilters}
-                                        className="text-[11px] font-black text-slate-400 hover:text-primary uppercase tracking-widest transition-colors flex items-center gap-2"
+                                        className="text-[11px]  text-slate-400 hover:text-primary uppercase tracking-widest transition-colors flex items-center gap-2"
                                     >
                                         <Filter className="w-3 h-3" /> Clear All Filters
                                     </button>
@@ -274,7 +275,7 @@ export default function TeachersPage() {
                                                     <div className="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
                                                         <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg">
                                                             <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                                                            <span className="font-black text-slate-900 text-xs tracking-tighter">{teacher.review || "5.0"}</span>
+                                                            <span className=" text-slate-900 text-xs tracking-tighter">{teacher.review || "5.0"}</span>
                                                         </div>
                                                         <Badge className="bg-slate-900/10 backdrop-blur-sm text-slate-900 border-none font-bold text-[9px] uppercase px-3 py-1.5 rounded-full">
                                                             {teacher.country}
@@ -300,29 +301,38 @@ export default function TeachersPage() {
                                                 <div className="px-4 pt-6 pb-2 flex flex-col flex-1">
                                                     <div className="flex justify-between items-start mb-4">
                                                         <div className="space-y-1">
-                                                            <h3 className="text-2xl font-black text-slate-900 leading-none group-hover:text-primary transition-colors tracking-tight">
+                                                            <h3 className="text-2xl  text-slate-900 leading-none group-hover:text-primary transition-colors tracking-tight">
                                                                 {teacher.firstname} {teacher.lastname}
                                                             </h3>
                                                             <div className="flex items-center gap-1.5 text-slate-400">
                                                                 <GraduationCap className="w-4 h-4 opacity-70" />
-                                                                <span className="text-[10px] font-black uppercase tracking-widest text-primary/80">
+                                                                <span className="text-[10px]  uppercase tracking-widest text-primary/80">
                                                                     {/* @ts-ignore */}
                                                                     {teacher.level || "Expert Faculty"}
                                                                 </span>
                                                             </div>
                                                         </div>
                                                         <div className="flex flex-col items-end shrink-0">
-                                                            <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Starting Hourly</span>
+                                                            <span className="text-[9px]  text-slate-300 uppercase tracking-widest mb-1">Starting Hourly</span>
                                                             <div className="flex items-baseline gap-1">
-                                                                <span className="text-2xl font-black text-slate-900 leading-none">{teacher.start_from}</span>
+                                                                <span className="text-2xl  text-slate-900 leading-none">{teacher.start_from}</span>
                                                                 <span className="text-[10px] font-bold text-slate-400">LE</span>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <p className="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2 font-medium italic">
-                                                        "{teacher.intro}"
-                                                    </p>
+                                                    <DescriptionTooltip
+                                                        content={
+                                                            <div className="max-w-xs">
+                                                                <p className="font-bold text-primary mb-1">About {teacher.firstname}</p>
+                                                                <p className="text-slate-600 leading-relaxed">{teacher.intro}</p>
+                                                            </div>
+                                                        }
+                                                    >
+                                                        <p className="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2 font-medium italic cursor-help">
+                                                            "{teacher.intro}"
+                                                        </p>
+                                                    </DescriptionTooltip>
 
                                                     {/* Teacher Stats Panel */}
                                                     <div className="grid grid-cols-2 gap-3 mb-6 bg-slate-50/80 p-3 rounded-[1.5rem] border border-slate-100/50">
@@ -332,7 +342,7 @@ export default function TeachersPage() {
                                                             </div>
                                                             <div>
                                                                 <div className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Students</div>
-                                                                <div className="text-sm font-black text-slate-900">{teacher.students || 0}</div>
+                                                                <div className="text-sm  text-slate-900">{teacher.students || 0}</div>
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center gap-3">
@@ -341,18 +351,18 @@ export default function TeachersPage() {
                                                             </div>
                                                             <div>
                                                                 <div className="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">Lessons</div>
-                                                                <div className="text-sm font-black text-slate-900">{teacher.lessons || 0}</div>
+                                                                <div className="text-sm  text-slate-900">{teacher.lessons || 0}</div>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     {/* Dynamic Meta Info */}
                                                     <div className="flex flex-wrap gap-2 mb-8">
-                                                        <div className="flex items-center gap-2 bg-slate-100/50 hover:bg-slate-100 transition-colors px-3 py-1.5 rounded-full text-[10px] font-black text-slate-600 border border-transparent hover:border-slate-200 cursor-default">
+                                                        <div className="flex items-center gap-2 bg-slate-100/50 hover:bg-slate-100 transition-colors px-3 py-1.5 rounded-full text-[10px]  text-slate-600 border border-transparent hover:border-slate-200 cursor-default">
                                                             <Clock className="w-3 h-3 opacity-50" />
                                                             {teacher.timezone?.split('/')?.[1]?.replace('_', ' ') || teacher.timezone || "General Timezone"}
                                                         </div>
-                                                        <div className="flex items-center gap-2 bg-slate-100/50 hover:bg-slate-100 transition-colors px-3 py-1.5 rounded-full text-[10px] font-black text-slate-600 border border-transparent hover:border-slate-200 cursor-default">
+                                                        <div className="flex items-center gap-2 bg-slate-100/50 hover:bg-slate-100 transition-colors px-3 py-1.5 rounded-full text-[10px]  text-slate-600 border border-transparent hover:border-slate-200 cursor-default">
                                                             <SlidersHorizontal className="w-3 h-3 opacity-50" />
                                                             {teacher.level || "Full Access"}
                                                         </div>
@@ -360,7 +370,7 @@ export default function TeachersPage() {
 
                                                     {/* Interactive CTAs */}
                                                     <div className="flex items-center gap-3 mt-auto">
-                                                        <Button size="lg" className="flex-1 rounded-2xl bg-slate-900 hover:bg-primary shadow-xl shadow-slate-200 hover:shadow-primary/30 font-black transition-all h-10 group/btn">
+                                                        <Button size="lg" className="flex-1 rounded-2xl bg-slate-900 hover:bg-primary shadow-xl shadow-slate-200 hover:shadow-primary/30  transition-all h-10 group/btn">
                                                             View Full Profile
                                                             <ArrowRight className="w-4.5 h-4.5 ml-3 group-hover/btn:translate-x-1.5 transition-transform" />
                                                         </Button>
@@ -396,7 +406,7 @@ export default function TeachersPage() {
                                         <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300">
                                             <Search className="w-10 h-10" />
                                         </div>
-                                        <h3 className="text-2xl font-black text-slate-900 mb-2">No Matching Experts</h3>
+                                        <h3 className="text-2xl  text-slate-900 mb-2">No Matching Experts</h3>
                                         <p className="text-slate-500 font-medium mb-8">We couldn't find any teachers matching your current filters.</p>
                                         <Button onClick={resetFilters} variant="outline" className="rounded-xl border-primary text-primary font-bold hover:bg-primary/5">
                                             Clear All Filters

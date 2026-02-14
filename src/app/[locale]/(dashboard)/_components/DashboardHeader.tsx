@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter, useParams } from "next/navigation";
+import LanguageSwitcher from "@/components/Layout/header/_components/LanguageSwitcher";
 
 export default function DashboardHeader() {
   const { toggleSidebar } = useSidebar();
@@ -20,7 +21,7 @@ export default function DashboardHeader() {
   const router = useRouter();
   const params = useParams();
   const locale = params?.locale || "en";
-console.log(user);
+  console.log(user);
 
   const handleLogout = () => {
     logout();
@@ -37,7 +38,7 @@ console.log(user);
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm">
       <div className="flex h-16 items-center justify-between px-4 md:px-8">
-        
+
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
@@ -47,15 +48,16 @@ console.log(user);
           >
             <Icon icon="mdi:menu" width={24} height={24} />
           </Button>
-          <div className="flex items-center gap-3"> 
+          <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-black bg-clip-text ">
               Dashboard
             </h1>
           </div>
         </div>
- 
+
         <div className="flex items-center gap-4">
-      
+          <LanguageSwitcher />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -91,8 +93,8 @@ console.log(user);
                 <Icon icon="mdi:cog" className="mr-2 h-4 w-4 text-primary" />
                 <span className="font-medium">Settings</span>
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                onClick={handleLogout} 
+              <DropdownMenuItem
+                onClick={handleLogout}
                 className="cursor-pointer text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 hover:text-white transition-colors duration-200"
               >
                 <Icon icon="mdi:logout" className="mr-2 h-4 w-4" />

@@ -7,6 +7,7 @@ export interface SessionTable {
   created_at: string;
   updated_at: string;
   break: number;
+  teacher?: Teacher;
 }
 
 export interface Session {
@@ -15,11 +16,13 @@ export interface Session {
   sessiontable_id: number;
   reason: string | null;
   status: string;
-  refund_status: string;
-  created_at: string;
-  updated_at: string;
-  cost: number;
+  refund_status?: string;
+  created_at?: string;
+  updated_at?: string;
+  cost?: number;
   session_table: SessionTable;
+  student: Teacher; // Usually students and teachers share the same base User/Teacher fields in this project
+  teacher: Teacher;
 }
 
 export interface TeacherFile {
@@ -72,6 +75,21 @@ export interface Teacher {
   file: TeacherFile;
 }
 
+export interface Wallet {
+  id: number;
+  totalAmount: number;
+  date: string;
+  amount: number;
+  teacherAmount: number;
+  adminAmount: number;
+  balance: number;
+  description: string | null;
+  type: "credit" | "debit" | string;
+  status: number;
+  receiver: Teacher | null;
+  sender: Teacher | null;
+}
+
 export interface User {
   id: number;
   image: string;
@@ -91,4 +109,5 @@ export interface User {
   source: string | null;
   sessions: Session[];
   teachers: Teacher[];
+  wallets: Wallet[];
 }

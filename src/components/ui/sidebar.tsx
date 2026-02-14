@@ -5,7 +5,7 @@ import { Slot } from "@radix-ui/react-slot"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 
 type SidebarContext = {
   open: boolean
@@ -89,19 +89,19 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
         {...props}
       >
         <div className="relative w-6 h-6">
-          <span 
+          <span
             className={cn(
               "absolute block w-6 h-0.5 bg-white transition-all duration-300",
               open ? "rotate-45 top-3" : "top-1"
             )}
           />
-          <span 
+          <span
             className={cn(
               "absolute block w-6 h-0.5 bg-white transition-all duration-300 top-3",
               open ? "opacity-0" : "opacity-100"
             )}
           />
-          <span 
+          <span
             className={cn(
               "absolute block w-6 h-0.5 bg-white transition-all duration-300",
               open ? "-rotate-45 top-3" : "top-5"
@@ -132,19 +132,19 @@ const SidebarInternalTrigger = React.forwardRef<React.ElementRef<typeof Button>,
         {...props}
       >
         <div className="relative w-6 h-6">
-          <span 
+          <span
             className={cn(
               "absolute block w-6 h-0.5 bg-white transition-all duration-300",
               open ? "rotate-45 top-3" : "top-1"
             )}
           />
-          <span 
+          <span
             className={cn(
               "absolute block w-6 h-0.5 bg-white transition-all duration-300 top-3",
               open ? "opacity-0" : "opacity-100"
             )}
           />
-          <span 
+          <span
             className={cn(
               "absolute block w-6 h-0.5 bg-white transition-all duration-300",
               open ? "-rotate-45 top-3" : "top-5"
@@ -164,17 +164,19 @@ const Sidebar = React.forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
 
     return (
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent 
-          side="left" 
+        <SheetContent
+          side="left"
           className={cn(
             "w-full bg-black border-gray-800 p-2",
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
             "data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
             "[&>button]:hidden",
             className
-          )} 
+          )}
           {...props}
         >
+          <SheetTitle className="sr-only">Menu</SheetTitle>
+          <SheetDescription className="sr-only">Navigation Menu</SheetDescription>
           <div className="flex h-full w-full flex-col">
             <div className="flex justify-end">
               <SidebarInternalTrigger />

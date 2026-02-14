@@ -62,7 +62,7 @@ export default function RegisterForm() {
     const { setAuth } = useAuth();
     const { mutateAsync: registerTeacher, isPending: isPendingTeacher } = useRegisterwithTeacher();
     const { mutateAsync: registerStudent, isPending: isPendingStudent } = useRegisterwithStudent();
-    
+
     const isPending = isPendingTeacher || isPendingStudent;
 
     const {
@@ -126,10 +126,10 @@ export default function RegisterForm() {
                 timezone: data.timezone,
                 source: data.source,
                 type: data.type,
-                accept_terms: data.accept_terms ? "1" : "0",  
+                accept_terms: data.accept_terms ? "1" : "0",
             };
- 
-            const result = await (userType === "Teacher" 
+
+            const result = await (userType === "Teacher"
                 ? registerTeacher(registrationData)
                 : registerStudent(registrationData));
 
@@ -137,7 +137,7 @@ export default function RegisterForm() {
             if (result) {
                 setAuth(result);
             }
- 
+
             router.push(`/${locale}/dashboard`);
         } catch (err: any) {
             console.error("Registration error:", err);
@@ -147,7 +147,7 @@ export default function RegisterForm() {
     };
 
     return (
-        <Card className="w-full max-w-xl bg-white/60 dark:bg-black/60 backdrop-blur-xl shadow-md animate-in fade-in slide-in-from-left-10 duration-700 border border-white/20 ">
+        <Card className="w-full max-w-xl bg-white/60 dark:bg-black/60 backdrop-blur-xl shadow-md animate-in fade-in slide-in-from-left-10 duration-700 border border-white/20">
             <CardHeader className="space-y-4 pb-2">
                 <div className="flex justify-center mb-2">
                     <div className="relative w-40 h-16 transition-transform duration-300 hover:scale-105">
@@ -167,7 +167,7 @@ export default function RegisterForm() {
                     Join Unihome Academy to start your learning journey
                 </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6 pt-6">
+            <CardContent className="space-y-6 pt-6 scrollbar-thin">
                 {error && (
                     <Alert variant="destructive" className="animate-in fade-in slide-in-from-top-2">
                         <AlertDescription>{error}</AlertDescription>
@@ -345,7 +345,7 @@ export default function RegisterForm() {
                         <Label htmlFor="whats">WhatsApp Number <span className="text-red-500">*</span></Label>
                         <Input
                             id="whats"
-                            {...register("whats", { 
+                            {...register("whats", {
                                 required: "WhatsApp number is required.",
                                 minLength: { value: 10, message: "Please enter a valid WhatsApp number" }
                             })}

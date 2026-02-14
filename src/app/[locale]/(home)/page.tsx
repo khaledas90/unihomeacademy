@@ -9,10 +9,10 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Features />
-      <CourseHighlights />
       <Teachers />
       <Testimonials />
+      <Features />
+      <CourseHighlights />
     </>
   );
 }

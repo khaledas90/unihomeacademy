@@ -86,7 +86,7 @@ export default function Hero() {
             <div className="relative">
               <div className="relative w-[85%] h-screen overflow-hidden">
                 <div className="absolute inset-0" />
-                <div className="absolute inset-0  mt-20 flex items-center justify-center">
+                <div className="absolute bottom-0 mt-20 flex items-center justify-center">
                   <Image
                     src={heroImage}
                     alt="logo"
@@ -98,7 +98,7 @@ export default function Hero() {
                 </div>
               </div>
 
-              <div className="absolute top-[310px] -right-4 bg-white rounded-xl shadow-lg p-3 border border-border max-w-full">
+              <div className="absolute top-[420px] right-16 bg-white rounded-xl shadow-lg p-3 border border-border max-w-full">
                 <div className="flex items-start gap-2">
                   <div className="flex-shrink-0 w-8 h-8 bg-[#1f447b]/10 rounded-lg flex items-center justify-center">
                     <CheckCircle2 className="w-4 h-4 text-[#1f447b]" />

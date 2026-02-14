@@ -1,143 +1,121 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Icon } from "@iconify/react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-
-const statsCards = [
-  {
-    title: "Total Sessions",
-    value: "24",
-    change: "+12%",
-    icon: "mdi:calendar-clock",
-    color: "from-primary to-primary/80",
-    bgColor: "bg-primary/10",
-  },
-  {
-    title: "Completed",
-    value: "18",
-    change: "+8%",
-    icon: "mdi:check-circle",
-    color: "from-green-500 to-green-600",
-    bgColor: "bg-green-500/10",
-  },
-  {
-    title: "Upcoming",
-    value: "6",
-    change: "+3",
-    icon: "mdi:clock-outline",
-    color: "from-secondary to-secondary/80",
-    bgColor: "bg-secondary/10",
-  },
-  {
-    title: "Teachers",
-    value: "5",
-    change: "Active",
-    icon: "mdi:account-supervisor",
-    color: "from-purple-500 to-purple-600",
-    bgColor: "bg-purple-500/10",
-  },
-];
+import { Card, CardContent } from "@/components/ui/card";
+import { useSessions } from "@/store/api/useSessions";
+import { StatsCard } from "../_components/StatsCard";
+import { SessionFilters } from "../_components/SessionFilters";
+import { SessionItem } from "../_components/SessionItem";
+import { EmptySessions } from "../_components/EmptySessions";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function DashboardPage() {
   const [activeFilter, setActiveFilter] = useState("all");
+  const { data: sessionsData, isLoading } = useSessions();
+
+  const sessions = useMemo(() => sessionsData?.data?.sessions || [], [sessionsData]);
+
+  const stats = useMemo(() => {
+    const total = sessions.length;
+    const completed = sessions.filter(s => s.status === "Completed").length;
+    const upcoming = sessions.filter(s => s.status === "Booked" || s.status === "Live").length;
+    const teachersCount = new Set(sessions.map(s => s.teacher?.id).filter(Boolean)).size;
+
+    return [
+      {
+        title: "Total Sessions",
+        value: total,
+        change: "Lifetime",
+        icon: "mdi:calendar-clock",
+        color: "from-primary to-primary/80",
+        bgColor: "bg-primary/5",
+      },
+      {
+        title: "Completed",
+        value: completed,
+        change: `${total > 0 ? Math.round((completed / total) * 100) : 0}% Rate`,
+        icon: "mdi:check-circle",
+        color: "from-green-500 to-green-600",
+        bgColor: "bg-green-500/5",
+      },
+      {
+        title: "Upcoming",
+        value: upcoming,
+        change: upcoming > 0 ? "Next soon" : "No queue",
+        icon: "mdi:clock-outline",
+        color: "from-secondary to-secondary/80",
+        bgColor: "bg-secondary/5",
+      },
+      {
+        title: "My Teachers",
+        value: teachersCount,
+        change: "Active",
+        icon: "mdi:account-supervisor",
+        color: "from-purple-500 to-purple-600",
+        bgColor: "bg-purple-500/5",
+      },
+    ];
+  }, [sessions]);
+
+  const filteredSessions = useMemo(() => {
+    if (activeFilter === "all") return sessions;
+    return sessions.filter(s => s.status.toLowerCase() === activeFilter.toLowerCase());
+  }, [sessions, activeFilter]);
+
   return (
     <div className="flex-1 bg-gradient-to-br from-gray-50 via-white to-gray-50/50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950/50 min-h-screen">
-      <div className="container mx-auto px-4 py-6 md:py-8">
-        
-        <div className="mb-8 flex items-center gap-3">
-        
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+
+        {/* Welcome Header */}
+        <div className="mb-10 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl flex items-center gap-2 md:text-3xl font-semibold text-gray-900 dark:text-white mb-1">
-              Welcome Back !   <Icon icon="mdi:hand-wave" width={32} height={32} className="text-primary" />
+            <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-2 flex items-center gap-3">
+              Welcome Back! <Icon icon="mdi:hand-wave" className="text-primary animate-bounce-slow" />
             </h1>
-            <p className="text-base text-gray-600 dark:text-gray-400">
-              Here's what's happening with your sessions today
+            <p className="text-slate-500 dark:text-gray-400 font-medium">
+              You have {stats[2].value} upcoming sessions this week.
             </p>
           </div>
         </div>
- 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-          {statsCards.map((stat, index) => (
-            <Card
-              key={index}
-              className={cn(
-                "border-0 shadow-sm hover:shadow-md transition-all overflow-hidden",
-                stat.bgColor
-              )}
-            >
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  {stat.title}
-                </CardTitle>
-                <div className={cn("p-2 rounded-lg bg-gradient-to-br", stat.color, "opacity-100")}>
-                  <Icon icon={stat.icon} width={20} height={20} className={cn("text-white")} />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-baseline justify-between">
-                  <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                    {stat.value}
-                  </div>
-                  <span className="text-xs font-semibold text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full">
-                    {stat.change}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {isLoading ? (
+            Array(4).fill(0).map((_, i) => (
+              <Skeleton key={i} className="h-32 rounded-3xl" />
+            ))
+          ) : (
+            stats.map((stat, index) => (
+              <StatsCard key={index} {...stat} value={stat.value.toString()} />
+            ))
+          )}
         </div>
 
-        {/* Filter Tabs */}
-        <div className="mb-6">
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              { label: "All Lessons", value: "all", icon: "mdi:book-open-variant" },
-              { label: "Today Lessons", value: "today", icon: "mdi:calendar-today" },
-              { label: "Booked", value: "booked", icon: "mdi:calendar-check" },
-              { label: "Completed", value: "completed", icon: "mdi:check-circle" },
-              { label: "Live Session", value: "live", icon: "mdi:play-circle" },
-              { label: "Cancelled", value: "cancelled", icon: "mdi:cancel" },
-            ].map((tab) => {
-              const isActive = activeFilter === tab.value;
-              return (
-                <button
-                  key={tab.value}
-                  onClick={() => setActiveFilter(tab.value)}
-                  className={cn(
-                    "flex items-center cursor-pointer  gap-2 px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-300",
-                    isActive
-                      ? "bg-primary text-white shadow-lg shadow-primary/30"
-                      : "bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-2 border-primary/30 hover:border-primary hover:bg-primary/5"
-                  )}
-                >
-                  <Icon icon={tab.icon} width={18} height={18} />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
+        {/* Sessions Section */}
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-center">
+            <SessionFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+          </div>
+
+          <div className="grid gap-4">
+            {isLoading ? (
+              Array(3).fill(0).map((_, i) => (
+                <Skeleton key={i} className="h-24 rounded-3xl" />
+              ))
+            ) : filteredSessions.length > 0 ? (
+              filteredSessions.map((session) => (
+                <SessionItem key={session.id} session={session} />
+              ))
+            ) : (
+              <Card className="border-none shadow-sm rounded-[2.5rem] bg-white dark:bg-gray-900">
+                <CardContent className="p-0">
+                  <EmptySessions filter={activeFilter} />
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
- 
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-8"> 
-            <div className="flex flex-col items-center justify-center py-16">
-              <Icon
-                icon="mdi:inbox-outline"
-                width={80}
-                height={80}
-                className="text-gray-400 dark:text-gray-600 mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                No sessions found
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400 text-center max-w-md">
-                There are no {activeFilter === "all" ? "" : activeFilter} sessions available at the moment.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
