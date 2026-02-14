@@ -15,7 +15,7 @@ export default function Hero() {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
+          <div className="space-y-8 mt-10">
             <div className="inline-flex items-center mb-2 gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-border shadow-sm">
               <Monitor className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-foreground/70">
@@ -23,7 +23,7 @@ export default function Hero() {
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            <h1 className="text-[35px] md:text-5xl lg:text-7xl font-bold leading-tight">
               Upgrade English For{" "}
               <span className="bg-primary bg-clip-text text-transparent">
                 Real Success
@@ -35,7 +35,7 @@ export default function Hero() {
               and understand English with clarity and confidence.
             </p>
 
-            <div>
+            <div className="  flex items-center lg:justify-start justify-center">
               <Link href={"/teachers"}>
               <Button
                 size="lg"
@@ -60,7 +60,7 @@ export default function Hero() {
                 {[image1, image2, image3].map((i, index) => (
                   <div
                     key={index}
-                    className="w-12 h-12 rounded-full border-2 border-white bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-sm font-semibold text-primary shadow-md"
+                    className="md:w-12 md:h-12 w-10 h-10 rounded-full border-2 border-white bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center text-sm font-semibold text-primary shadow-md"
                   >
                     <Image
                       src={i}
