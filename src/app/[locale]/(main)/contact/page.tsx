@@ -44,9 +44,9 @@ export default function ContactUsPage() {
     return (
         <div className="min-h-screen pt-32 pb-20 bg-slate-50">
             <div className="container mx-auto px-4">
-                {/* Header */}
-                <div className="max-w-3xl mb-20">
-                    <h1 className="text-5xl md:text-7xl  text-slate-900 leading-tight mb-8">
+           
+                <div className="max-w-3xl mx-auto text-center mb-20">
+                    <h1 className="text-4xl md:text-5xl  text-slate-900 leading-tight mb-8">
                         Let's Start a <br />
                         <span className="text-primary ">Conversation</span>
                     </h1>
@@ -56,14 +56,14 @@ export default function ContactUsPage() {
                 </div>
 
                 <div className="grid lg:grid-cols-12 gap-12 items-start">
-                    {/* Contact Info Cards */}
+                   
                     <div className="lg:col-span-5 space-y-6">
                         <div className="grid gap-6">
                             {contactInfo.map((item, idx) => (
                                 <a
                                     key={idx}
                                     href={item.link}
-                                    className="group p-8 rounded-[2rem] bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center gap-6"
+                                    className="group p-8 rounded-[2rem] bg-white border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex items-center gap-6"
                                 >
                                     <div className="w-16 h-16 rounded-2xl bg-primary/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                                         <item.icon className="w-8 h-8" />
@@ -75,8 +75,7 @@ export default function ContactUsPage() {
                                 </a>
                             ))}
                         </div>
-
-                        {/* Extra Info Block */}
+ 
                         <Card className="p-8 rounded-[2rem] border-none shadow-xl bg-slate-900 text-white relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-[60px]" />
                             <div className="relative z-10 space-y-6">
@@ -98,10 +97,9 @@ export default function ContactUsPage() {
                             </div>
                         </Card>
                     </div>
-
-                    {/* Contact Form */}
+ 
                     <div className="lg:col-span-7">
-                        <Card className="p-8 md:p-12 rounded-[2.5rem] border-none shadow-2xl bg-white animate-in fade-in slide-in-from-right-10 duration-700">
+                        <Card className="p-8 md:p-12 rounded-[2.5rem] border-none shadow-md bg-white animate-in fade-in slide-in-from-right-10 duration-700">
                             <form className="space-y-8">
                                 <div className="grid md:grid-cols-2 gap-8">
                                     <div className="space-y-3">
@@ -130,14 +128,14 @@ export default function ContactUsPage() {
                                         placeholder="How can we help?"
                                         className="h-14 rounded-2xl bg-slate-50 border-transparent focus:bg-white focus:ring-primary"
                                     />
-                                </div>
-
+                                </div> 
                                 <div className="space-y-3">
                                     <Label htmlFor="message" className=" text-sm text-slate-700 ml-1">Your Message</Label>
                                     <Textarea
-                                        id="message"
+                                        id="message" 
+                                        maxLength={500}
                                         placeholder="Tell us more about your inquiry..."
-                                        className="min-h-[160px] rounded-2xl bg-slate-50 border-transparent focus:bg-white focus:ring-primary py-4"
+                                        className="min-h-[220px] rounded-2xl bg-slate-50 border-transparent focus:bg-white focus:ring-primary py-4"
                                     />
                                 </div>
 
